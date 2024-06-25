@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f8ff;
+}
+
+header {
+    background-color: #4682b4;
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 1rem;
+}
+
+nav ul li a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+main {
+    padding: 2rem;
+}
+
+section {
+    margin-bottom: 2rem;
+}
+
+.journey-steps {
+    display: flex;
+    justify-content: space-between;
+}
+
+.step {
+    background-color: #87ceeb;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#virtual-tour {
+    position: relative;
+}
+
+.hotspot {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#board-filter {
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    background-color: #4682b4;
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+#board-customizer {
+    margin-bottom: 1rem;
+}
+
+#board-preview {
+    border: 1px solid #000000;
+}
