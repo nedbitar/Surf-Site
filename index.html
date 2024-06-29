@@ -10,7 +10,8 @@
             margin: 0;
             font-family: 'Courier New', monospace;
             overflow: hidden;
-            background-color: #000;
+            /* background-color: #001a33; */
+            color: #fff;
         }
         #bg-video {
             position: fixed;
@@ -28,20 +29,29 @@
         .container {
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+        }
+        .logo {
+            width: 150px; /* Adjust size as needed */
+            height: auto;
+            margin-bottom: 20px;
         }
         nav {
             display: flex;
             flex-direction: column;
             align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
         }
         nav a {
             color: #fff;
             text-decoration: none;
             padding: 10px;
-            margin: 5px;
-            font-size: 18px;
+            margin: 20px 5px;
+            font-size: 24px;
             letter-spacing: 2px;
             text-transform: uppercase;
             position: relative;
@@ -52,32 +62,80 @@
             content: '';
             position: absolute;
             bottom: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
-            height: 2px;
-            background-color: #fff;
-            transition: left 0.3s ease-in-out;
-        }
-        nav a:hover {
-            color: #a0a0a0;
+            height: 60px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(72, 192, 255, 0.2) 10%, 
+                rgba(72, 192, 255, 0.5) 50%, 
+                rgba(255, 255, 255, 0.7) 51%, 
+                rgba(72, 192, 255, 0.5) 52%, 
+                rgba(72, 192, 255, 0.2) 90%, 
+                transparent 100%);
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%) scaleY(0.1);
+            border-radius: 50% 50% 0 0;
         }
         nav a:hover::before {
-            left: 0;
+            animation: surfableWave 2s infinite linear;
+        }
+        nav a:hover {
+            color: #48c0ff;
+        }
+
+        .logo {
+            filter: brightness(0) invert(1);
+            width: 75%;
+            height: auto;
+        }
+
+        @keyframes surfableWave {
+            0% {
+                transform: translateX(-100%) scaleY(0.1) rotate(0deg);
+            }
+            25% {
+                transform: translateX(-75%) scaleY(0.5) rotate(5deg);
+            }   
+            50% {
+                transform: translateX(-50%) scaleY(1) rotate(10deg);
+            }
+            75% {
+                transform: translateX(-25%) scaleY(0.5) rotate(5deg);
+            }
+            100% {
+                transform: translateX(0) scaleY(0.1) rotate(0deg);
+            }
         }
     </style>
 </head>
 <body>
-    <video autoplay muted loop id="bg-video">
-        <source src="https://scontent-sjc3-1.cdninstagram.com/o1/v/t16/f2/m69/An_pBkHCoZsX8xsxjmkC2kusZBr_DogUy6T7mVPvCybCoP1WwVT_sA21WENfqcGoEG4O2xrRpaoCwtSLjxUDGcbi.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uY2Fyb3VzZWxfaXRlbS5jMi42MzguYmFzZWxpbmUifQ&_nc_ht=scontent-sjc3-1.cdninstagram.com&_nc_cat=103&vs=7406284396062972_1861540470&_nc_vs=HBksFQIYOnBhc3N0aHJvdWdoX2V2ZXJzdG9yZS9HQ0ZGS1JsOXhBeEZSam9EQU14cXFFUXRhMk5OYmtZTEFBQUYVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dPMG5KUmx3eDctWWlqd0ZBS2RJdk5ydjREQjJia1lMQUFBRhUCAsgBACgAGAAbAYgHdXNlX29pbAEwFQAAJvyZ0O6HvbRBFQIoAkMzLBdASghysCDEnBgSZGFzaF9iYXNlbGluZV8yX3YxEQB17gcA&ccb=9-4&oh=00_AYDVm7HtZwCNbuv1c0YrPIXTfFpZz9VLdutrOdA9yz9o8w&oe=667C2576&_nc_sid=0b30b7" type="video/mp4">
+    <video autoplay muted loop playsinline id="bg-video">
+        <source src="grant.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
     <div class="container">
+        <img src="logojpeg.svg" alt="Ocean Crafted Surfboards Logo" class="logo">
         <nav>
             <a href="#home">Ride</a>
-            <a href="#about">Craft</a>
+            <a href="about.html">Craft</a>
             <a href="#boards">Shape</a>
             <a href="#contact">Connect</a>
         </nav>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const video = document.getElementById('bg-video');
+            
+            video.addEventListener('loadeddata', () => {
+                console.log('Video loaded successfully');
+            });
+
+            video.addEventListener('error', (e) => {
+                console.error('Error loading video:', e);
+            });
+        });
+    </script>
 </body>
 </html>
