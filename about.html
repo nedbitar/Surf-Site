@@ -3,18 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Instagram Videos - Ocean Crafted Surfboards</title>
-    <link rel="stylesheet" href="about.css">
+    <title>About - EcoSurf Boards</title>
+    <style>
+         * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* White background for consistency */
+            font-size: 16px;
+            color: #333333; /* Darker text for better contrast */
+        }
+        header {
+            background-color: #e6d5b8; /* Consistent header background */
+            box-shadow: 0 0.125em 0.25em rgba(0,0,0,0.1);
+            padding: 2% 0;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 45%; 
+            width: 75%;
+            height: auto;
+            filter: sepia(50%) saturate(200%) hue-rotate(350deg) brightness(90%) contrast(90%);
+        }
+        nav {
+            background-color: #2b2b2b; /* Darker nav background */
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav ul li {
+            position: relative;
+            padding: 1% 1.5%;
+            margin: 0 0.5%;
+        }
+        nav ul li a {
+            color: #f5e8d3; /* Light sepia text color */
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.0625em;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            padding: 0.5em 1em;
+            display: block;
+            position: relative;
+        }
+        nav ul li a::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 0.25em;
+            bottom: 0;
+            left: 0;
+            background-color: #e76f51; /* Muted orange accent */
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.3s ease-in-out;
+        }
+        nav ul li a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+        nav ul li a:hover {
+            background-color: #1a1a1a; /* Darker gray on hover */
+        }
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 3% 2%;
+            text-align: center; /* Center align the content */
+        }
+        h1 {
+            color: #2a9d8f; /* Teal accent for headings */
+            text-align: center;
+            font-size: 2em;
+        }
+        p {
+            color: #333333;
+            line-height: 1.6;
+        }
+        .photo-placeholder {
+            width: 100%; /* Make sure the image takes up the full width of its container */
+            max-width: 300px; /* Optional: limit the maximum width */
+            height: auto; /* Maintain aspect ratio */
+            object-fit: cover; /* Cover the container while preserving aspect ratio */
+            border-radius: 0.5em; /* Optional: rounded corners */
+            box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.1); /* Optional: shadow */
+        }
+        /* Responsive design */
+        @media screen and (max-width: 48em) {
+            .logo {
+                max-width: 40%;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                padding: 2% 0;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .photo-placeholder {
+                height: 250px;
+            }
+        }
+        @media screen and (max-width: 30em) {
+            .logo {
+                max-width: 60%;
+            }
+            h1 {
+                font-size: 1.25em;
+            }
+            p {
+                font-size: 0.875em;
+            }
+            .photo-placeholder {
+                height: 200px;
+                font-size: 1em;
+            }
+        }
+        footer {
+        background-color: #2b2b2b; /* Match the navbar background */
+        padding: 1% 0;
+        box-shadow: 0 -0.125em 0.25em rgba(0,0,0,0.1);
+    }
+
+    .footer-links {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .footer-links li {
+        margin: 0 0.5em;
+        padding: 0.5em 0;
+    }
+
+    .footer-links a {
+        color: #f5e8d3; /* Light sepia text color */
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.0625em;
+        padding: 0.5em 1em;
+        display: block;
+        position: relative;
+        transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .footer-links a::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 0.25em;
+        bottom: 0;
+        left: 0;
+        background-color: #e76f51; /* Muted orange accent */
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .footer-links a:hover::before {
+        visibility: visible;
+        transform: scaleX(1);
+    }
+
+    .footer-links a:hover {
+        background-color: #1a1a1a; /* Darker gray on hover */
+    }
+
+    footer p {
+        text-align: center;
+        color: #f5e8d3;
+        margin: 0;
+        font-size: 0.875em; /* Slightly smaller text for the footer */
+    }
+    </style>
 </head>
 <body>
-    <video autoplay muted loop id="bg-video">
-        <source src="https://scontent-sjc3-1.cdninstagram.com/o1/v/t16/f2/m69/An_pBkHCoZsX8xsxjmkC2kusZBr_DogUy6T7mVPvCybCoP1WwVT_sA21WENfqcGoEG4O2xrRpaoCwtSLjxUDGcbi.mp4?efg=eyJxZV9ncm91cHMiOiJbXCJpZ193ZWJfZGVsaXZlcnlfdnRzX290ZlwiXSIsInZlbmNvZGVfdGFnIjoidnRzX3ZvZF91cmxnZW4uY2Fyb3VzZWxfaXRlbS5jMi42MzguYmFzZWxpbmUifQ&_nc_ht=scontent-sjc3-1.cdninstagram.com&_nc_cat=103&vs=7406284396062972_1861540470&_nc_vs=HBksFQIYOnBhc3N0aHJvdWdoX2V2ZXJzdG9yZS9HQ0ZGS1JsOXhBeEZSam9EQU14cXFFUXRhMk5OYmtZTEFBQUYVAALIAQAVAhg6cGFzc3Rocm91Z2hfZXZlcnN0b3JlL0dPMG5KUmx3eDctWWlqd0ZBS2RJdk5ydjREQjJia1lMQUFBRhUCAsgBACgAGAAbAYgHdXNlX29pbAEwFQAAJvyZ0O6HvbRBFQIoAkMzLBdASghysCDEnBgSZGFzaF9iYXNlbGluZV8yX3YxEQB17gcA&ccb=9-4&oh=00_AYDVm7HtZwCNbuv1c0YrPIXTfFpZz9VLdutrOdA9yz9o8w&oe=667C2576&_nc_sid=0b30b7" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <header>
+        <img src="logojpeg.svg" alt="EcoSurf Boards Logo" class="logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="rev2home.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="boards.html">Boards</a></li>
+        </ul>
+    </nav>
     <div class="container">
-        <h1>My Instagram Videos</h1>
-        <div id="video-container"></div>
+        <h1>About Mike Wallace</h1>
+        <div class="about-section">
+            <p>At the age of 18, iconoclast Founder, Mike Wallace, embarked on his journey learning to surf relatively late on Oahu. But he made up for this late start with a vengeance and ended up coaching the high school surf team in Half Moon Bay and also drawn into the art of shaping boards for family and friends. Influenced by renowned figures such as Marc Andreini, George Greenough, and Michel Junod, the pivotal moment to design and shape his first board occurred while he was authoring an “In the Green Room” column for the now-defunct surf blog and forecasting site, Surf Pulse based in San Francisco.</p>
+            
+            <img src="shaping.jpg" alt="Description of Image" class="photo-placeholder">
+            
+            <p>Upon writing an early piece on computer shaping after interviewing Matt Ambrose in Pacifica, Wallace shaped a 5 ’10 fish inspired by a Chris Christenson model. Like a fish taking to water, designing and shaping boards eventually took over his life, and 20 years later, Mike Wallace is now collaborating on edge board guns for 3x-time world surfing champion, Grant “Twiggy” Baker, his customers and other Mavericks chargers such as Wilem Banks and Steve Rice. But his innovations don’t stop here.</p>
+            
+            <img src="twig2.jpg" alt="Description of Image" class="photo-placeholder">
+            
+            <p>Venturing beyond traditional methods, Wallace has expanded his repertoire to encompass alternative materials. His exploration knows no bounds, involving experimentation with diverse elements such as flax-basalt, agave, carbon-innegra, and epoxy bio-resin—just to name a few. Continuously pushing the boundaries of possibility, Mike engages in frequent trials with new glassing layups, resins, blank materials, and 3D innovations to propel the craft to new heights.</p>
+            
+            <img src="board.jpg" alt="Description of Image" class="photo-placeholder">
+            
+            <p>This relentless pursuit of innovation extends to a variety of elements, from bio-blanks like Polyola and Grow Blanks agave to protective shells crafted from flax and basalt. Enthused by the plethora of options and supported by team riders like Twiggy, who share his enthusiasm for change and seek advantages in improved properties, Wallace constantly seeks to combine fresh and innovative options for walking on water.</p>
+            
+            <p>Looking forward, Mike aspires to collaborate with SwellCycle on the development of 3D printed boards, utilizing recycled plastic hospital trays in a fully closed-loop manufacturing process. Simultaneously, he remains committed to supporting local shapers and builders in his community, creating a network that fosters growth and sustainability within the realm of board development.</p>
+            
+            <p>When we came across iconoclast and Mike Wallace’s natural talent for shaping combined with his passion for alternative eco-friendly materials, we knew we needed him to be a part of The ECOBOARD Project.</p>
+            
+            <p><em>“I view the Ecoboard Project as a responsibility to our earth and the next generation. The key for me is that the exercise is not just about the materials for the sake of clumsy eco-friendliness, but that the economics and business proposition are valid. For example, the design should be as advanced as the raw materials, resulting in improved performance at a comparable price point (give or take) … that’s the true gold standard.”</em></p>
+            
+            <img src="orgb.jpeg" alt="Description of Image" class="photo-placeholder">
+            
+            <p>We’ve been fortunate to supply the Polyola blank Mike Wallace used in the “Best in Show” competition at the Boardroom Show to create a new Edge-Bonzer design. Wallace explains, “Without Sustainable Surf/SeaTrees, I wouldn’t have otherwise had access to such a blank. I feel as if I’m part of a collective of like-minded shapers seeking to innovate and improve our lot and move up the food chain to more enlightened practices.”</p>
+            
+            <p>The purpose for eco-friendly boards for Wallace lied with curiosity. After noticing a few shapers using flax on-deck inlays, such as Ashley Lloyd and Gary McNeill, Mike was curious how the boards held up and performed. It wouldn’t be long before he played an impactful role in moving the needle of using alternative materials to build and shape boards.</p>
+            
+            <img src="bonz.jpg" alt="Description of Image" class="photo-placeholder">
+            
+            <p>Fortunate to meet Dave Rastavich in Australia, he showed Wallace a fish by Gary he’d been surfing for over 5-years that was worn but still intact. Along his journey in Australia, Wallace also made friends with Grant Newby, an incredible board designer and Eco-builder who connected him with key suppliers of eco materials in Australia, who were 5 to 10 years ahead of anyone stateside. These key suppliers included Sanded Australia and Colan Australia, which were pivotal in Wallace’s journey into shaping Twig’s most advanced guns to-date. This also gave him a couple years’ leg up ahead of the major brands, many of whom have just now begun to adopt basalt and other alternative glass products as part of their lines.</p>
+            
+            <p>In the future, Mike Wallace envisions putting these innovative boards to the ultimate test—braving the heat of battle in the most challenging conditions. His aspiration is to demonstrate their prowess and durability in the crucible of the most extreme surf conditions. As such, he shapes performance, tow, and gun models for Twig Surfboard Designs in N. America. Twig has fully embraced the Ecoboard program with his Mavericks quiver. Consulting directly with Greenough and Marc Andreini, Twig’s edge guns have been refined to deliver more drive, speed, and control.</p>
+            
+            <img src="twig.jpg" alt="Description of Image" class="photo-placeholder">
+            
+            <p>This is achieved through a smaller inboard template bounded by a lip that surrounds deep single- to double-concaves, outside of which are concave rails on the bottom and soft perimeter. This allows the gun to lift up on the inner planing surface and reduce drag, while the soft outside rail maintains power steering-like control. Grant “Twiggy” Baker won the ‘Biggest Wave’ category of the Mavericks Surf Awards during a 20-wave session in March 2022 on a 10’ Twig-iconoclast ‘Eco Warrior’ gun and has been testing the edge design in Nazare, Portugal, and Sunset Beach, Hawaii. He even rode a 10’ edge gun shaped by Jeff Bushman during the Eddie Aikau at Waimea.</p>
+            
+            <p>When asked for the inspiration behind his work, Mike Wallace is continually fired up by customers who are seeking a different sensation in the water and trust him with their recreation goals and to provide him with honest answers. Feedback from his customers is invaluable and tops up the Stoke-o-meter; “it has always been the true currency of shapers, closest thing to being Santa Claus” as Wallace puts it.</p>
+        </div>
     </div>
-    <script src="about.js"></script>
 </body>
+<footer>
+    <div class="container">
+        <p>&copy; 2024 EcoSurf Boards. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="#privacy-policy">Privacy Policy</a></li>
+            <li><a href="#terms-of-service">Terms of Service</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="https://www.instagram.com/ecosurfboards" target="_blank">Instagram</a></li>
+        </ul>
+    </div>
+</footer>
 </html>

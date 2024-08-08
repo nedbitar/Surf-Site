@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSurf Boards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* Changed background color to white */
+            font-size: 16px;
+            color: #333333; /* Darker text for better contrast */
+        }
+        header {
+            background-color: #e6d5b8; /* Slightly darker sepia for header */
+            box-shadow: 0 0.125em 0.25em rgba(0,0,0,0.1);
+            padding: 2% 0;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 45%; 
+            width: 75%;
+            height: auto;
+            filter: sepia(50%) saturate(200%) hue-rotate(350deg) brightness(90%) contrast(90%);
+        }
+        nav {
+            background-color: #2b2b2b; /* Darker nav background */
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav ul li {
+            position: relative;
+            padding: 1% 1.5%;
+            margin: 0 0.5%;
+        }
+        nav ul li a {
+            color: #f5e8d3; /* Light sepia text color */
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.0625em;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            padding: 0.5em 1em;
+            display: block;
+            position: relative;
+        }
+        nav ul li a::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 0.25em;
+            bottom: 0;
+            left: 0;
+            background-color: #e76f51; /* Muted orange accent */
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.3s ease-in-out;
+        }
+        nav ul li a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+        nav ul li a:hover {
+            background-color: #1a1a1a; /* Darker gray on hover */
+        }
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 3% 2%;
+            text-align: center; /* Center align the content */
+        }
+        h1 {
+            color: #2a9d8f; /* Teal accent for headings */
+            text-align: center;
+            font-size: 2em;
+        }
+        p {
+            color: #333333;
+            line-height: 1.6;
+        }
+        .iconoclast-definition {
+            color: #ffd700; /* Gold text color */
+            padding: 2em;
+            margin: 2em auto; /* Center the definition box */
+            border-radius: 0.5em;
+            border: 2px solid #ffd700; /* Gold stroke color */
+            box-shadow: 0 0.25em 0.5em rgba(0,0,0,0.1);
+            max-width: 600px; /* Limit the width of the definition box */
+            background-color: transparent; /* No background color */
+        }
+        .iconoclast-definition h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #ffd700; /* Gold text color */
+        }
+        .iconoclast-definition .pronunciation {
+            font-style: italic;
+            margin-bottom: 0.5em;
+        }
+        .iconoclast-definition .definition {
+            font-weight: bold;
+            margin-bottom: 0.5em;
+        }
+        .iconoclast-definition .synonyms,
+        .iconoclast-definition .antonyms {
+            font-size: 0.9em;
+            margin: 0.25em 0;
+        }
+        /* Removed the orange top bar */
+        
+        /* Responsive design */
+        @media screen and (max-width: 48em) {
+            .logo {
+                max-width: 40%;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                padding: 2% 0;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .iconoclast-definition {
+                padding: 1.5em;
+            }
+            .iconoclast-definition h2 {
+                font-size: 1.3em;
+            }
+        }
+        @media screen and (max-width: 30em) {
+            .logo {
+                max-width: 60%;
+            }
+            h1 {
+                font-size: 1.25em;
+            }
+            p {
+                font-size: 0.875em;
+            }
+            .iconoclast-definition {
+                padding: 1em;
+            }
+            .iconoclast-definition h2 {
+                font-size: 1.2em;
+            }
+            .iconoclast-definition .synonyms,
+            .iconoclast-definition .antonyms {
+                font-size: 0.8em;
+            }
+        }
+
+    
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3em 0; /* Add some margin to the top and bottom */
+            gap: 2em; /* Space between images */
+        }
+        .image-gallery img {
+            max-width: 20%; /* Make the images smaller */
+            height: auto;
+            border-radius: 0.5em;
+            box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.1);
+        }
+        footer {
+        background-color: #2b2b2b; /* Match the navbar background */
+        padding: 1% 0;
+        box-shadow: 0 -0.125em 0.25em rgba(0,0,0,0.1);
+    }
+
+    .footer-links {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .footer-links li {
+        margin: 0 0.5em;
+        padding: 0.5em 0;
+    }
+
+    .footer-links a {
+        color: #f5e8d3; /* Light sepia text color */
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.0625em;
+        padding: 0.5em 1em;
+        display: block;
+        position: relative;
+        transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    .footer-links a::before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 0.25em;
+        bottom: 0;
+        left: 0;
+        background-color: #e76f51; /* Muted orange accent */
+        visibility: hidden;
+        transform: scaleX(0);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .footer-links a:hover::before {
+        visibility: visible;
+        transform: scaleX(1);
+    }
+
+    .footer-links a:hover {
+        background-color: #1a1a1a; /* Darker gray on hover */
+    }
+
+    footer p {
+        text-align: center;
+        color: #f5e8d3;
+        margin: 0;
+        font-size: 0.875em; /* Slightly smaller text for the footer */
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logojpeg.svg" alt="EcoSurf Boards Logo" class="logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="rev2home.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="boards.html">Boards</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Iconoclast Boards</h1>
+        <p>Iconoclast custom surboards epitomizes a fusion of iconic design principles with innovative and sustainble materials. </p>
+        
+        <div class="iconoclast-definition">
+            <h2>Iconoclast</h2>
+            <p class="pronunciation">(I'kon'e-klast')</p>
+            <p class="definition">n., A surfer who defies convention, seeks own line-up.</p>
+            <p class="synonyms">Synonyms: Non-conformist, Individualist, Maverick</p>
+            <p class="antonyms">Antonyms: Conformist, Sheep</p>
+        </div>
+
+        <h2>The Goal?</h2>
+        <p>Produce equipment with not only a smaller eco-footprint but create beautiful aesthetics and improved functionality.
+        <br>
+        By incorporating displacement hull theories from legends like Bob Simmons and George Greenough up front, paired with planing hull concaves and channels in the rear, along with advanced natural materials like flax-basalt, iconoclast aims to achieve a more dynamic ride. Their ‘Eco Warrior’ line goes a step further, using Entropy bio-resin and experimenting with agave blanks from ECOBOARD “Gold Level” member Grow Blanks in Kenya. 
+        </p>
+
+        <div class="image-gallery">
+            <img src="bassalt.jpg" alt="Basalt Surfboard Image 1">
+            <img src="bassaltb.jpg" alt="Basalt Surfboard Image 2">
+        </div>
+    </div>
+</body>
+<footer>
+    <div class="container">
+        <p>&copy; 2024 EcoSurf Boards. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="#privacy-policy">Privacy Policy</a></li>
+            <li><a href="#terms-of-service">Terms of Service</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="https://www.instagram.com/ecosurfboards" target="_blank">Instagram</a></li>
+        </ul>
+    </div>
+</footer>
+
+
+
+
+</html>

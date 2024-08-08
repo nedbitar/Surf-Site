@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boards - EcoSurf Boards</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-size: 16px;
+            color: #333333;
+        }
+        header {
+            background-color: #e6d5b8;
+            box-shadow: 0 0.125em 0.25em rgba(0,0,0,0.1);
+            padding: 2% 0;
+        }
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 45%; 
+            width: 75%;
+            height: auto;
+            filter: sepia(50%) saturate(200%) hue-rotate(350deg) brightness(90%) contrast(90%);
+        }
+        nav {
+            background-color: #2b2b2b;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav ul li {
+            position: relative;
+            padding: 1% 1.5%;
+            margin: 0 0.5%;
+        }
+        nav ul li a {
+            color: #f5e8d3;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.0625em;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            padding: 0.5em 1em;
+            display: block;
+            position: relative;
+        }
+        nav ul li a::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 0.25em;
+            bottom: 0;
+            left: 0;
+            background-color: #e76f51;
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.3s ease-in-out;
+        }
+        nav ul li a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+        nav ul li a:hover {
+            background-color: #1a1a1a;
+        }
+        .container {
+            max-width: 80%;
+            margin: 0 auto;
+            padding: 3% 2%;
+            text-align: center;
+        }
+        h1 {
+            color: #2a9d8f;
+            text-align: center;
+            font-size: 2em;
+        }
+        .boards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2%;
+        }
+        .board-item {
+            flex: 1 1 30%;
+            margin-bottom: 2em;
+        }
+        .board-item img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0.5em;
+            box-shadow: 0 0.125em 0.25em rgba(0, 0, 0, 0.1);
+        }
+        .board-description {
+            margin-top: 1em;
+            font-size: 1em;
+            color: #333333;
+            text-align: center;
+        }
+        @media screen and (max-width: 48em) {
+            .logo {
+                max-width: 40%;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                padding: 2% 0;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            .board-item {
+                flex: 1 1 100%;
+            }
+        }
+        footer {
+            background-color: #2b2b2b;
+            padding: 1% 0;
+            box-shadow: 0 -0.125em 0.25em rgba(0,0,0,0.1);
+        }
+        .footer-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .footer-links li {
+            margin: 0 0.5em;
+            padding: 0.5em 0;
+        }
+        .footer-links a {
+            color: #f5e8d3;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.0625em;
+            padding: 0.5em 1em;
+            display: block;
+            position: relative;
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        .footer-links a::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 0.25em;
+            bottom: 0;
+            left: 0;
+            background-color: #e76f51;
+            visibility: hidden;
+            transform: scaleX(0);
+            transition: all 0.3s ease-in-out;
+        }
+        .footer-links a:hover::before {
+            visibility: visible;
+            transform: scaleX(1);
+        }
+        .footer-links a:hover {
+            background-color: #1a1a1a;
+        }
+        footer p {
+            text-align: center;
+            color: #f5e8d3;
+            margin: 0;
+            font-size: 0.875em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logojpeg.svg" alt="EcoSurf Boards Logo" class="logo">
+    </header>
+    <nav>
+        <ul>
+            <li><a href="rev2home.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="boards.html">Boards</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Our Surfboards</h1>
+        <div class="boards">
+            <div class="board-item">
+                <img src="placeholder1.jpg" alt="Surfboard 1">
+                <p class="board-description">Surfboard 1 - A versatile board for all wave conditions.</p>
+            </div>
+            <div class="board-item">
+                <img src="placeholder2.jpg" alt="Surfboard 2">
+                <p class="board-description">Surfboard 2 - Perfect for big waves and extreme conditions.</p>
+            </div>
+            <div class="board-item">
+                <img src="placeholder3.jpg" alt="Surfboard 3">
+                <p class="board-description">Surfboard 3 - A lightweight board for quick maneuvers.</p>
+            </div>
+            <div class="board-item">
+                <img src="placeholder4.jpg" alt="Surfboard 4">
+                <p class="board-description">Surfboard 4 - Ideal for long rides and smooth turns.</p>
+            </div>
+            <div class="board-item">
+                <img src="placeholder5.jpg" alt="Surfboard 5">
+                <p class="board-description">Surfboard 5 - Built for speed and control in any situation.</p>
+            </div>
+            <div class="board-item">
+                <img src="placeholder6.jpg" alt="Surfboard 6">
+                <p class="board-description">Surfboard 6 - A durable board for all-around performance.</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 EcoSurf Boards. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="#privacy-policy">Privacy Policy</a></li>
+                <li><a href="#terms-of-service">Terms of Service</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="https://www.instagram.com/ecosurfboards" target="_blank">Instagram</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
