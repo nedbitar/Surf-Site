@@ -21,11 +21,9 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            flex-wrap: nowrap;
         }
 
         .nav ul li a {
-            
             color: #ffffff;
             text-decoration: none;
             font-weight: bold;
@@ -48,8 +46,7 @@
         .logo {
             display: block;
             margin: 0 auto;
-            max-width: 60%;
-            width: 100%;
+            max-width: 50%;
             height: auto;
             filter: sepia(100%) saturate(600%) hue-rotate(20deg) brightness(310%) contrast(90%);
         }
@@ -62,7 +59,7 @@
         }
         
         .homeimg {
-            width: 30%;
+            max-width: 30%;
             height: auto;
         }
 
@@ -84,14 +81,11 @@
 
         .def {
             color: white;
-            text-align: left;
+            text-align: center;
             text-transform: uppercase;
             font-weight: bold;
             position: relative;
-            padding: 1em;
-            font-size: x-large;
-            letter-spacing: 0.0925em;
-            line-height: 1.5em;
+            padding: 1em 0;
         }
 
         .def::before, .def::after {
@@ -99,9 +93,8 @@
             display: block;
             height: 5px; /* Adjust thickness here */
             background-color: white;
-            width: 100%; /* Adjust width here */
+            width: 80px; /* Adjust width here */
             margin: 0 auto;
-
         }
 
         .def::before {
@@ -122,72 +115,36 @@
         }
         
         .photo-gallery {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3vw; /* Responsive gap between images */
-    padding: 3vw 5vw; /* Responsive padding around the gallery */
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
-}
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3vw; /* Responsive gap between images */
+            padding: 3vw 5vw; /* Responsive padding around the gallery */
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        }
 
-.photo-gallery img {
-    width: 28vw; /* Default responsive width   28 56*/ 
-    height: auto; /* Maintain aspect ratio */
-    max-height: 15vw; /* Ensure images are landscape by capping height 12 30 */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow for modern look */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    object-fit: cover; /* Ensures content fits within landscape */
-    filter: sepia(100%) saturate(90%) hue-rotate(15deg) brightness(60%) contrast(100%);
-}
+        .photo-gallery img {
+            width: 28vw; /* Responsive width */
+            height: auto; /* Maintain aspect ratio */
+            max-height: 15vw; /* Ensure images are landscape by capping height */
+            border-radius: 12px; /* Slightly rounded corners */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Deeper shadow for modern look */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            object-fit: cover; /* Ensures content fits within landscape */
+        }
 
-.photo-gallery img:nth-child(1) {
-    width: 38vw; /* Make the first image larger */
-    max-height: 25vw; /* Increase max height for larger image */
-}
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+        }
 
-.photo-gallery img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
-}
-
-/* Media query for smaller screens */
-@media (max-width: 933px) {
- 
-
-    .homeimg {
-        width: 90%;
-        height: auto;
-    }
-
-
-    .logo {
-        max-width: 95%
-    }
-    .nav ul {
-        flex: 0 1 auto;
-    }
-
-    .nav ul li a {
-        padding: 0.25em 0.5em;
-    }
-
-    .def {
-        color: white;
-        text-align: left;
-        text-transform: uppercase;
-        font-weight: bold;
-        position: relative;
-        padding: 1em;
-        font-size: medium;
-        letter-spacing: 0.0825em;
-        line-height: 1.5em;
-    }
-
-    .photo-gallery img:nth-child(1) {
-        
-    }
-}
-
+        /* Media query for smaller screens */
+        @media (max-width: 768px) {
+            .photo-gallery img {
+                width: 45vw; /* Larger size on smaller screens */
+                max-height: 25vw; /* Maintain landscape orientation */
+            }
+        }
 
 
 
@@ -217,18 +174,12 @@
             i·con·o·clast
             <br>
             A surfer who defies convention, seeks own line-up.
-            <Br>
-            Synonyms: Non-conformist, Individualist, Maverick
-            <br>
-            Antonyms: Conformist, Sheep
         </p>
     </div>
 
+    
     <div class="photo-gallery">
         <img src="shaping.jpg" alt="Surfboard 1">
-    
-    </div>
-    <div class="photo-gallery">
         <img src="shaping2.jpg" alt="Surfboard 2">
         <img src="shaping4.jpg" alt="Surfboard 3">
     </div>
