@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iconoclast Handshapes</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: slategrey;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: nowrap;
+        }
+
+        .nav ul li a {
+            
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.0925em;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            padding: 0.5em 1em;
+            display: block;
+            position: relative;
+        }
+
+        .nav ul li a:hover {
+            color: #ffdf00;
+        }
+
+        header {
+            padding: 1.5% 0;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            max-width: 60%;
+            width: 100%;
+            height: auto;
+            filter: sepia(100%) saturate(600%) hue-rotate(20deg) brightness(310%) contrast(90%);
+        }
+        
+
+        .image-container {
+            position: relative;
+            text-align: center;
+            padding-top: 1.5em;
+        }
+        
+        .homeimg {
+            width: 30%;
+            height: auto;
+        }
+
+        footer {
+            background-color: rgb(214, 177, 108);
+            color: white;
+            text-align: center;
+            padding: 1em;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* .def {
+            color: white;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        } */
+
+        .def {
+            color: white;
+            text-align: left;
+            text-transform: uppercase;
+            font-weight: bold;
+            position: relative;
+            padding: 1em;
+            font-size: x-large;
+            letter-spacing: 0.0925em;
+            line-height: 1.5em;
+        }
+
+        .def::before, .def::after {
+            content: '';
+            display: block;
+            height: 5px; /* Adjust thickness here */
+            background-color: white;
+            width: 100%; /* Adjust width here */
+            margin: 0 auto;
+
+        }
+
+        .def::before {
+            margin-bottom: 10px; /* Adjust space between line and text */
+        }
+
+        .def::after {
+            margin-top: 10px; /* Adjust space between line and text */
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .photo-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3vw; /* Responsive gap between images */
+            padding: 3vw 5vw; /* Responsive padding around the gallery */
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        }
+
+        .photo-gallery img {
+    width: 38vw; /* Increased width from 28vw to 38vw */
+    height: auto;
+    max-height: 20vw; /* Adjusted max height from 15vw to 20vw */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+    filter: sepia(100%) saturate(90%) hue-rotate(15deg) brightness(60%) contrast(100%);
+}
+
+.photo-gallery img:nth-child(1) {
+    width: 50vw; /* Increased width from 38vw to 50vw */
+    max-height: 30vw; /* Adjusted max height from 25vw to 30vw */
+}
+
+
+        .photo-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* Enhanced shadow on hover */
+        }
+
+/* Media query for smaller screens */
+@media (max-width: 933px) {
+ 
+
+    .homeimg {
+        width: 90%;
+        height: auto;
+    }
+
+
+    .logo {
+        max-width: 95%
+    }
+    .nav ul {
+        flex: 0 1 auto;
+    }
+
+    .nav ul li a {
+        padding: 0.25em 0.5em;
+    }
+
+    .def {
+        color: white;
+        text-align: left;
+        text-transform: uppercase;
+        font-weight: bold;
+        position: relative;
+        padding: 1em;
+        font-size: medium;
+        letter-spacing: 0.0825em;
+        line-height: 1.5em;
+    }
+
+    .photo-gallery img:nth-child(1) {
+        
+    }
+}
+
+
+
+
+    
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logojpeg.svg" alt="EcoSurf Boards Logo" class="logo">
+    </header>
+
+    <div class="nav">
+        <ul>
+            <li><a href="home2.html">HOME</a></li>
+            <li><a href="about.html">Story</a></li>
+            <li><a href="boards.html">Boards</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="image-container">
+            <img src="proto.jpg" class="homeimg" alt="Home Image">
+        </div>
+    
+        <p class="def">
+            i·con·o·clast
+            <br>
+            A surfer who defies convention, seeks own line-up.
+            <Br>
+            Synonyms: Non-conformist, Individualist, Maverick
+            <br>
+            Antonyms: Conformist, Sheep
+        </p>
+    </div>
+    
+    </div>
+    <div class="photo-gallery">
+        <img src="shaping.jpg" alt="Surfboard 1">
+        <img src="shaping2.jpg" alt="Surfboard 2">
+        <img src="shaping4.jpg" alt="Surfboard 3">
+    </div>
+
+  
+
+   
+
+    <footer>
+       Handcrafted Surfboards by Mike Wallace
+    </footer>
+
+  
+        
+</body>
+</html>
