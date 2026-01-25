@@ -3,96 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ocean Crafted Surfboards</title>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-            color: #fff;
-        }
-        #bg-video {
-            position: fixed;
-            right: 0;
-            bottom: 0;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -1;
-            object-fit: cover;
-            opacity: 0.7;
-        }
-        .container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-   
-        .logo {
-            filter: brightness(0) invert(1);
-            width: 85%;
-            height: auto;
-        }
-
-        .cap {
-            font-size: small;
-            font-weight: bolder;
-        }
-
-        .nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: nowrap;
-        }
-
-        .nav ul li a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 0.0925em;
-            transition: color 0.3s ease, background-color 0.3s ease;
-            padding: 0.5em 1em;
-            display: block;
-            position: relative;
-            border: 2px solid white; /* White outline */
-            background-color: rgba(255, 255, 255, 0.1); /* Transparent background */
-        }
-        
-        /* Hover effect */
-        .nav ul li a:hover {
-            background-color: gray;
-            border: none; /* Remove the white outline */
-        }
-      
-    </style>
+    <title>Iconoclast Handshapes</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
-<body>
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="ocn.mp4" type="video/mp4">
+<body class="landing-page">
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="videos/ocn.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    <div class="container">
-        <img src="logojpeg.svg" alt="Ocean Crafted Surfboards Logo" class="logo">
-        <p class="cap">Custom Surfboards by Mike Wallace</p>
-        <div class="nav">
-            <ul>
-                <li><a href="home.html">● Home ●</a></li>
-            </ul>
-        </div>
+
+    <div class="landing-container">
+        <img src="images/logojpeg.svg" alt="Iconoclast Handshapes Logo" class="landing-logo">
+        <p class="landing-caption">Custom Surfboards by Mike Wallace</p>
+        <nav class="landing-nav">
+            <a href="home.html">Enter</a>
+        </nav>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const video = document.getElementById('bg-video');
-            
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.querySelector('.bg-video');
+
             video.addEventListener('loadeddata', () => {
                 console.log('Video loaded successfully');
             });

@@ -1,0 +1,906 @@
+/* ==========================================================================
+   Iconoclast Handshapes - Main Stylesheet
+   Balanced Dark & Organic Design System
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Variables (Colors, Fonts, Spacing)
+   -------------------------------------------------------------------------- */
+:root {
+    /* Balanced Color Palette - Not too dark */
+    --color-dark: #2d3436;
+    --color-charcoal: #3d4447;
+    --color-slate: #4a5568;
+    --color-driftwood: #8b7355;
+    --color-gold: #b8a024;
+    --color-sand: #e6d5b8;
+    --color-foam: #f5f0e8;
+    --color-white: #ffffff;
+    --color-text: #e8e8e8;
+    --color-text-muted: #b0b0b0;
+
+    /* Typography - Consistent across site */
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Spacing Scale */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2rem;
+    --space-xl: 3rem;
+
+    /* Border Radius - Organic feel */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+
+    /* Transitions */
+    --transition-base: 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-normal);
+    background-color: var(--color-dark);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.3;
+    margin: 0;
+}
+
+p {
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-normal);
+    margin: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    font-family: var(--font-primary);
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout Components
+   -------------------------------------------------------------------------- */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+.main-content {
+    flex: 1;
+    padding: var(--space-lg) 0;
+}
+
+/* --------------------------------------------------------------------------
+   4. Navigation
+   -------------------------------------------------------------------------- */
+.nav {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: var(--space-sm) 0;
+}
+
+.nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.nav ul li a {
+    color: var(--color-white);
+    text-decoration: none;
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-bold);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    transition: all var(--transition-base);
+    padding: var(--space-xs) var(--space-md);
+    display: block;
+    position: relative;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius-lg);
+    background-color: rgba(139, 115, 85, 0.15);
+}
+
+.nav ul li a:hover {
+    background-color: var(--color-driftwood);
+    border-color: var(--color-driftwood);
+}
+
+.nav ul li a.active {
+    background-color: var(--color-driftwood);
+    border-color: var(--color-driftwood);
+}
+
+/* --------------------------------------------------------------------------
+   5. Header & Logo
+   -------------------------------------------------------------------------- */
+header {
+    background-color: transparent;
+    padding: var(--space-lg) 0 var(--space-sm) 0;
+    text-align: center;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto;
+    max-width: 500px;
+    width: 60%;
+    height: auto;
+    filter: brightness(0) invert(1);
+    opacity: 0.95;
+}
+
+/* --------------------------------------------------------------------------
+   6. Content Sections
+   -------------------------------------------------------------------------- */
+.hero-section {
+    text-align: center;
+    padding: var(--space-lg) 0;
+}
+
+.hero-image {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.definition-block {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--color-text);
+    padding: var(--space-lg);
+    margin: var(--space-lg) auto;
+    max-width: 900px;
+    border-radius: var(--radius-lg);
+    position: relative;
+}
+
+.definition-block::before,
+.definition-block::after {
+    content: '';
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+    width: 50%;
+    margin: 0 auto;
+}
+
+.definition-block::before {
+    margin-bottom: var(--space-md);
+}
+
+.definition-block::after {
+    margin-top: var(--space-md);
+}
+
+.definition-block h2 {
+    font-size: 1.8rem;
+    margin: 0 0 var(--space-sm) 0;
+    letter-spacing: 0.12em;
+    text-transform: lowercase;
+    color: var(--color-white);
+}
+
+.definition-block p {
+    margin: var(--space-xs) 0;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: var(--color-text);
+}
+
+.definition-block strong {
+    color: var(--color-gold);
+    font-weight: var(--font-weight-medium);
+}
+
+/* --------------------------------------------------------------------------
+   7. Photo Gallery
+   -------------------------------------------------------------------------- */
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.photo-gallery img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.photo-gallery img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.photo-gallery img:first-child {
+    grid-column: 1 / -1;
+    height: 400px;
+}
+
+/* --------------------------------------------------------------------------
+   8. Timeline (Story Page)
+   -------------------------------------------------------------------------- */
+.timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: var(--space-lg) auto;
+    padding: var(--space-md);
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    background: linear-gradient(180deg, var(--color-gold), var(--color-driftwood), var(--color-gold));
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -1.5px;
+    border-radius: 2px;
+}
+
+.timeline-item {
+    padding: var(--space-sm) var(--space-lg);
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    background-color: var(--color-gold);
+    border: 3px solid var(--color-dark);
+    top: 22px;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 12px rgba(184, 160, 36, 0.4);
+}
+
+.timeline-item.left {
+    left: 0;
+    padding-right: var(--space-xl);
+}
+
+.timeline-item.left::after {
+    right: -9px;
+}
+
+.timeline-item.right {
+    left: 50%;
+    padding-left: var(--space-xl);
+}
+
+.timeline-item.right::after {
+    left: -9px;
+}
+
+.timeline-content {
+    padding: var(--space-md);
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+}
+
+.timeline-item.left .timeline-content::before {
+    right: -20px;
+    border-left-color: rgba(255, 255, 255, 0.12);
+}
+
+.timeline-item.right .timeline-content::before {
+    left: -20px;
+    border-right-color: rgba(255, 255, 255, 0.12);
+}
+
+.timeline-content h3 {
+    color: var(--color-gold);
+    margin: 0 0 var(--space-xs) 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.timeline-content p {
+    margin: 0;
+    color: var(--color-text);
+    line-height: 1.7;
+    font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   9. Board Grid
+   -------------------------------------------------------------------------- */
+.boards-section {
+    padding: var(--space-lg);
+    background-color: transparent;
+}
+
+.boards-section h1 {
+    text-align: center;
+    color: var(--color-white);
+    font-size: 2rem;
+    margin-bottom: var(--space-lg);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.boards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.board-card {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.board-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: rgba(139, 115, 85, 0.5);
+}
+
+.board-card img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: transform var(--transition-base);
+}
+
+.board-card:hover img {
+    transform: scale(1.02);
+}
+
+.board-card-content {
+    padding: var(--space-md);
+}
+
+.board-card h3 {
+    margin: 0 0 var(--space-xs) 0;
+    color: var(--color-gold);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.board-card p {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   10. Instagram Page
+   -------------------------------------------------------------------------- */
+.instagram-section {
+    padding: var(--space-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.instagram-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+}
+
+.instagram-header h1 {
+    color: var(--color-white);
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: var(--space-sm);
+}
+
+.instagram-header p {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+}
+
+.instagram-header a {
+    color: var(--color-gold);
+    transition: color var(--transition-base);
+}
+
+.instagram-header a:hover {
+    color: var(--color-white);
+}
+
+.instagram-embed-container {
+    background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.instagram-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: var(--space-md);
+}
+
+.instagram-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    padding: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.instagram-avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+}
+
+.instagram-info h2 {
+    color: var(--color-white);
+    font-size: 1.3rem;
+    margin-bottom: 4px;
+}
+
+.instagram-info p {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.instagram-follow-btn {
+    margin-left: auto;
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+    padding: var(--space-xs) var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-bold);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.instagram-follow-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(225, 48, 108, 0.4);
+}
+
+.instagram-feed {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.instagram-post {
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.instagram-post img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+.instagram-post:hover img {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+.instagram-post-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.instagram-post:hover .instagram-post-overlay {
+    opacity: 1;
+}
+
+.instagram-post-overlay span {
+    color: white;
+    font-weight: var(--font-weight-bold);
+    font-size: 0.9rem;
+}
+
+.instagram-cta {
+    text-align: center;
+    margin-top: var(--space-lg);
+    padding-top: var(--space-md);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.instagram-cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-lg);
+    font-weight: var(--font-weight-bold);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.instagram-cta a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(225, 48, 108, 0.4);
+}
+
+/* Elfsight widget container styling */
+.elfsight-container {
+    background: transparent;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    min-height: 600px;
+}
+
+/* --------------------------------------------------------------------------
+   11. Footer
+   -------------------------------------------------------------------------- */
+footer {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--color-text);
+    text-align: center;
+    padding: var(--space-md);
+    margin-top: auto;
+}
+
+footer p {
+    margin: 0;
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+footer a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition-base);
+}
+
+footer a:hover {
+    color: var(--color-gold);
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: var(--space-sm) 0 0 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.footer-links a {
+    padding: var(--space-xs) var(--space-sm);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    font-size: 0.8rem;
+}
+
+.footer-links a:hover {
+    background-color: var(--color-driftwood);
+    border-color: var(--color-driftwood);
+    color: var(--color-white);
+}
+
+/* --------------------------------------------------------------------------
+   12. Landing Page Specific Styles
+   -------------------------------------------------------------------------- */
+.landing-page {
+    height: 100vh;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.landing-page .bg-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    object-fit: cover;
+    opacity: 0.7;
+}
+
+.landing-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-md);
+    color: white;
+}
+
+.landing-logo {
+    filter: brightness(0) invert(1);
+    width: 85%;
+    max-width: 700px;
+    height: auto;
+}
+
+.landing-caption {
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.15em;
+    margin: var(--space-sm) 0 var(--space-md) 0;
+    text-transform: uppercase;
+}
+
+.landing-nav a {
+    color: white;
+    text-decoration: none;
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: var(--space-sm) var(--space-lg);
+    display: inline-block;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: var(--radius-lg);
+    background-color: rgba(139, 115, 85, 0.25);
+    transition: all var(--transition-base);
+}
+
+.landing-nav a:hover {
+    background-color: var(--color-driftwood);
+    border-color: var(--color-driftwood);
+}
+
+/* --------------------------------------------------------------------------
+   13. Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+
+/* Tablet and below (768px) */
+@media (max-width: 768px) {
+    .logo {
+        width: 80%;
+        max-width: 400px;
+    }
+
+    .nav ul {
+        gap: var(--space-xs);
+    }
+
+    .nav ul li a {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.8rem;
+    }
+
+    .definition-block {
+        margin: var(--space-md);
+        padding: var(--space-md);
+    }
+
+    .definition-block h2 {
+        font-size: 1.4rem;
+    }
+
+    .definition-block p {
+        font-size: 0.95rem;
+    }
+
+    .photo-gallery {
+        padding: var(--space-md);
+        gap: var(--space-sm);
+    }
+
+    .photo-gallery img:first-child {
+        height: 250px;
+    }
+
+    /* Timeline mobile layout */
+    .timeline::after {
+        left: 20px;
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 50px;
+        padding-right: var(--space-sm);
+    }
+
+    .timeline-item.left,
+    .timeline-item.right {
+        left: 0;
+        padding-left: 50px;
+        padding-right: var(--space-sm);
+    }
+
+    .timeline-item::after,
+    .timeline-item.left::after,
+    .timeline-item.right::after {
+        left: 11px;
+        right: auto;
+    }
+
+    .timeline-item.left .timeline-content::before,
+    .timeline-item.right .timeline-content::before {
+        left: -20px;
+        right: auto;
+        border-left-color: transparent;
+        border-right-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .boards-grid {
+        grid-template-columns: 1fr;
+        padding: 0 var(--space-sm);
+    }
+
+    /* Instagram responsive */
+    .instagram-feed {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .instagram-profile {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .instagram-follow-btn {
+        margin-left: 0;
+        margin-top: var(--space-sm);
+    }
+}
+
+/* Mobile (480px) */
+@media (max-width: 480px) {
+    html {
+        font-size: 14px;
+    }
+
+    .logo {
+        width: 90%;
+    }
+
+    .landing-logo {
+        width: 95%;
+    }
+
+    .landing-caption {
+        font-size: 0.85rem;
+        text-align: center;
+    }
+
+    .nav ul li a {
+        padding: 0.4em 0.7em;
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+    }
+
+    .photo-gallery img {
+        height: 200px;
+    }
+
+    .photo-gallery img:first-child {
+        height: 200px;
+    }
+
+    .board-card img {
+        height: 220px;
+    }
+
+    .definition-block h2 {
+        font-size: 1.2rem;
+    }
+
+    .timeline-content h3 {
+        font-size: 1rem;
+    }
+
+    .timeline-content p {
+        font-size: 0.9rem;
+    }
+
+    .instagram-feed {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2px;
+    }
+
+    .instagram-avatar {
+        width: 60px;
+        height: 60px;
+    }
+}
