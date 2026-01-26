@@ -5,6 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Story - Iconoclast Handshapes</title>
     <link rel="stylesheet" href="css/main.css">
+    <style>
+        .version-selector {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            text-align: center;
+        }
+
+        .version-selector h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .version-selector .intro {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-xl);
+            line-height: 1.8;
+        }
+
+        .version-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .version-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            display: block;
+        }
+
+        .version-card:hover {
+            border-color: #ffdf00;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .version-card h2 {
+            color: #ffdf00;
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .version-card .version-name {
+            color: var(--color-white);
+            font-size: 1.1rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .version-card p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .version-card .preview-btn {
+            display: inline-block;
+            margin-top: var(--space-md);
+            padding: var(--space-xs) var(--space-md);
+            background: #ffdf00;
+            color: #1a1a1a;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+        }
+
+        .version-card:hover .preview-btn {
+            background: var(--color-white);
+        }
+
+        .version-card .preview-icon {
+            font-size: 3rem;
+            margin-bottom: var(--space-sm);
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,7 +102,14 @@
     <nav class="nav">
         <ul>
             <li><a href="home.html">Home</a></li>
-            <li><a href="story.html" class="active">Story</a></li>
+            <li class="dropdown">
+                <a href="story.html" class="active">Story ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="story-v1.html">V1 - Horizontal</a></li>
+                    <li><a href="story-v2.html">V2 - Immersive</a></li>
+                    <li><a href="story-v3.html">V3 - Minimal</a></li>
+                </ul>
+            </li>
             <li class="dropdown">
                 <a href="boards.html">Boards ▾</a>
                 <ul class="dropdown-menu">
@@ -28,54 +123,45 @@
     </nav>
 
     <main class="main-content">
-        <div class="timeline">
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <h3>The Beginning</h3>
-                    <p>At the age of 18, Iconoclast founder Mike Wallace embarked on his journey learning to surf relatively late in life on Oahu. But he made up for this late start with a vengeance, eventually coaching the high school surf team in Half Moon Bay and getting drawn into the art of shaping boards for family and friends. Influenced by renowned figures such as Marc Andreini, George Greenough, and Michel Junod, the inspiration to design and shape his first board occurred while he was authoring an "In the Green Room" column for the now-defunct surf blog and forecasting site, SurfPulse based in San Francisco.</p>
-                </div>
-            </div>
+        <section class="version-selector">
+            <h1>Our Story</h1>
+            <p class="intro">Choose a timeline layout to explore the Iconoclast journey. The client can select their preferred presentation style.</p>
 
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <h3>First Shapes</h3>
-                    <p>Upon writing an early piece on computer shaping after interviewing Matt Ambrose in Pacifica, Wallace shaped a 5'10" fish inspired by a Chris Christenson model. Like that very first fish, Wallace took to shaping like water; designing and shaping boards eventually took over his life. 20 years later, he is now collaborating on edge board guns for 3-time Big Wave World Surf Champion, Grant "Twiggy" Baker, his customers, and other Mavericks chargers such as Wilem Banks and Steve Rice.</p>
-                </div>
-            </div>
+            <div class="version-cards">
+                <a href="story-v1.html" class="version-card">
+                    <div class="preview-icon">↔️</div>
+                    <h2>V1</h2>
+                    <p class="version-name">Horizontal Scroll</p>
+                    <p>Interactive horizontal timeline with cards. Scroll or use arrows to navigate through the journey.</p>
+                    <span class="preview-btn">View Layout</span>
+                </a>
 
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <h3>Innovation & Awards</h3>
-                    <p>Venturing beyond traditional methods, Wallace's journey evolved to experimentation with diverse materials such as flax-basalt, agave, carbon-innegra, and epoxy bio-resin. Continuously pushing the boundaries of possibility, Mike engages in frequent trials with new glassing layups, resins, blank materials, and 3D innovations. Mike has placed twice in the Boardroom Show's "Best in Show" competition, tying for first with a finless model and placing top three for an innovative flax-basalt twin fish.</p>
-                </div>
-            </div>
+                <a href="story-v2.html" class="version-card">
+                    <div class="preview-icon">🖼️</div>
+                    <h2>V2</h2>
+                    <p class="version-name">Immersive</p>
+                    <p>Full-screen sections with background images. Dramatic, cinematic storytelling experience.</p>
+                    <span class="preview-btn">View Layout</span>
+                </a>
 
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <h3>Sustainable Materials</h3>
-                    <p>This relentless pursuit of innovation extends to a variety of elements, from bio-blanks like Polyola and Grow Blanks agave to protective shells crafted from flax and basalt. Enthused by a growing abundance of options and supported by team riders like Twiggy, who share his enthusiasm for change and seek advantages in improved properties, Wallace constantly seeks to combine fresh and innovative options for walking on water.</p>
-                </div>
+                <a href="story-v3.html" class="version-card">
+                    <div class="preview-icon">✨</div>
+                    <h2>V3</h2>
+                    <p class="version-name">Minimal</p>
+                    <p>Clean typographic design with chapter markers. Elegant, editorial-style presentation.</p>
+                    <span class="preview-btn">View Layout</span>
+                </a>
             </div>
-
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <h3>The Future</h3>
-                    <p>Looking forward, Mike aspires to collaborate with SwellCycle on the development of 3D printed boards, utilizing recycled plastic hospital trays in a fully closed-loop manufacturing process. That collaboration has already begun with a 7'2" stepup model that will soon be tested and refined in NorCal before being rolled out to savvy surf cognoscenti. Simultaneously, he remains committed to supporting local shapers and builders in his community, creating a network that fosters growth and sustainability within the realm of board development.</p>
-                </div>
-            </div>
-
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <h3>ECOBOARD Project</h3>
-                    <p>Mike is a proud participant in Sustainable Surf's ECOBOARD Project: "I feel as if I'm part of a collective of like-minded shapers seeking to innovate and improve our lot and move up the food chain to more enlightened practices."</p>
-                </div>
-            </div>
-        </div>
+        </section>
     </main>
 
     <footer>
         <p>Handcrafted Surfboards by Mike Wallace</p>
+        <ul class="footer-links">
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
+        </ul>
     </footer>
+
     <script src="js/customizer.js"></script>
 </body>
 </html>

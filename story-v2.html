@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story - Iconoclast Handshapes</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* V2: Immersive Full-Screen Sections */
+        .version-indicator {
+            text-align: center;
+            padding: var(--space-sm);
+            background: rgba(255, 223, 0, 0.1);
+            color: #ffdf00;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        body {
+            padding-top: 35px;
+        }
+
+        .immersive-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .immersive-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%);
+            z-index: 1;
+        }
+
+        .immersive-section .bg-image {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.6;
+            transform: scale(1.1);
+            transition: transform 8s ease-out;
+        }
+
+        .immersive-section:hover .bg-image {
+            transform: scale(1);
+        }
+
+        .section-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: var(--space-xl);
+        }
+
+        .section-content.right {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .section-number {
+            font-size: 8rem;
+            font-weight: bold;
+            color: rgba(255, 223, 0, 0.2);
+            line-height: 1;
+            margin-bottom: -2rem;
+        }
+
+        .section-content h2 {
+            font-size: 3rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-md);
+            position: relative;
+        }
+
+        .section-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: #ffdf00;
+        }
+
+        .section-content.right h2::after {
+            left: auto;
+            right: 0;
+        }
+
+        .section-content p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.9;
+            margin-top: var(--space-lg);
+        }
+
+        .section-content .highlight {
+            color: #ffdf00;
+            font-weight: 600;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator::after {
+            content: '↓';
+            display: block;
+            font-size: 1.5rem;
+            margin-top: 5px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        .quote-section {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: var(--space-xl);
+            text-align: center;
+            min-height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .big-quote {
+            max-width: 900px;
+            font-size: 2rem;
+            font-style: italic;
+            color: #fff;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .big-quote::before {
+            content: '"';
+            font-size: 10rem;
+            position: absolute;
+            top: -60px;
+            left: -40px;
+            color: rgba(255, 223, 0, 0.2);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .quote-author {
+            margin-top: var(--space-lg);
+            color: #ffdf00;
+            font-style: normal;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        @media (max-width: 768px) {
+            .section-number {
+                font-size: 5rem;
+            }
+
+            .section-content h2 {
+                font-size: 2rem;
+            }
+
+            .section-content p {
+                font-size: 1rem;
+            }
+
+            .section-content {
+                padding: var(--space-lg);
+            }
+
+            .section-content.right {
+                margin-left: 0;
+                text-align: left;
+            }
+
+            .section-content.right h2::after {
+                left: 0;
+                right: auto;
+            }
+
+            .big-quote {
+                font-size: 1.3rem;
+            }
+
+            .big-quote::before {
+                font-size: 6rem;
+                top: -40px;
+                left: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="version-indicator">Timeline Version 2 - Immersive</div>
+
+    <header>
+        <img src="images/logojpeg.svg" alt="Iconoclast Handshapes Logo" class="logo">
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li class="dropdown">
+                <a href="story.html" class="active">Story ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="story-v1.html">V1 - Horizontal</a></li>
+                    <li><a href="story-v2.html">V2 - Immersive</a></li>
+                    <li><a href="story-v3.html">V3 - Minimal</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="boards.html">Boards ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="boards-v1.html">V1 - Cards</a></li>
+                    <li><a href="boards-v2.html">V2 - Accordion</a></li>
+                    <li><a href="boards-v3.html">V3 - Editorial</a></li>
+                </ul>
+            </li>
+            <li><a href="instagram.html">Follow</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="immersive-section">
+            <div class="bg-image" style="background-image: url('images/shaping.jpg');"></div>
+            <div class="section-content">
+                <div class="section-number">01</div>
+                <h2>The Beginning</h2>
+                <p>At the age of <span class="highlight">18</span>, Iconoclast founder Mike Wallace embarked on his journey learning to surf relatively late in life on <span class="highlight">Oahu</span>. But he made up for this late start with a vengeance, eventually coaching the Half Moon Bay high school surf team and getting drawn into the art of shaping boards for family and friends.</p>
+            </div>
+            <div class="scroll-indicator">Scroll</div>
+        </section>
+
+        <section class="immersive-section">
+            <div class="bg-image" style="background-image: url('images/shaping2.jpg');"></div>
+            <div class="section-content right">
+                <div class="section-number">02</div>
+                <h2>First Shapes</h2>
+                <p>Influenced by renowned figures such as <span class="highlight">Marc Andreini</span>, <span class="highlight">George Greenough</span>, and <span class="highlight">Michel Junod</span>, Mike designed and shaped his first board while authoring an "In the Green Room" column for SurfPulse. Following an interview on computer shaping, Wallace shaped a <span class="highlight">5'10" fish</span> inspired by Chris Christenson.</p>
+            </div>
+        </section>
+
+        <div class="quote-section">
+            <blockquote class="big-quote">
+                If you find yourself stagnant and not innovating, you'll be left behind. We're constantly seeking to innovate. Don't be a sheep – that's our motto.
+                <cite class="quote-author">— Mike Wallace</cite>
+            </blockquote>
+        </div>
+
+        <section class="immersive-section">
+            <div class="bg-image" style="background-image: url('images/bassalt.jpg');"></div>
+            <div class="section-content">
+                <div class="section-number">03</div>
+                <h2>Innovation</h2>
+                <p>Venturing beyond traditional methods, Wallace's journey evolved to experimentation with <span class="highlight">flax-basalt</span>, <span class="highlight">agave</span>, <span class="highlight">carbon-innegra</span>, and epoxy bio-resin. Mike has placed twice in the Boardroom Show's "Best in Show" competition, tying for first with a finless model.</p>
+            </div>
+        </section>
+
+        <section class="immersive-section">
+            <div class="bg-image" style="background-image: url('images/twig.jpg');"></div>
+            <div class="section-content right">
+                <div class="section-number">04</div>
+                <h2>Big Wave</h2>
+                <p><span class="highlight">20 years later</span>, Mike is now collaborating on edge board guns for <span class="highlight">3-time World Surf Champion Grant "Twiggy" Baker</span> and other Mavericks chargers such as Wilem Banks and Steve Rice. Each year they refine and customize guns for the world's heaviest waves.</p>
+            </div>
+        </section>
+
+        <section class="immersive-section">
+            <div class="bg-image" style="background-image: url('images/orgb.jpeg');"></div>
+            <div class="section-content">
+                <div class="section-number">05</div>
+                <h2>The Future</h2>
+                <p>Looking forward, Mike aspires to collaborate with <span class="highlight">SwellCycle</span> on 3D printed boards, utilizing recycled plastic hospital trays in a fully closed-loop manufacturing process. As a proud participant in <span class="highlight">Sustainable Surf's ECOBOARD Project</span>, the innovation continues.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Handcrafted Surfboards by Mike Wallace</p>
+        <ul class="footer-links">
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
+        </ul>
+    </footer>
+
+    <script src="js/customizer.js"></script>
+</body>
+</html>

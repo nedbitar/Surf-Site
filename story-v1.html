@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story - Iconoclast Handshapes</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* V1: Horizontal Scrolling Timeline */
+        .version-indicator {
+            text-align: center;
+            padding: var(--space-sm);
+            background: rgba(255, 223, 0, 0.1);
+            color: #ffdf00;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .story-hero {
+            text-align: center;
+            padding: var(--space-xl) var(--space-md);
+        }
+
+        .story-hero h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .story-hero p {
+            color: var(--color-text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .horizontal-timeline-wrapper {
+            position: relative;
+            padding: var(--space-xl) 0;
+            overflow: hidden;
+        }
+
+        .scroll-hint {
+            text-align: center;
+            color: #ffdf00;
+            font-size: 0.85rem;
+            margin-bottom: var(--space-md);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .horizontal-timeline {
+            display: flex;
+            gap: var(--space-lg);
+            padding: var(--space-lg) var(--space-xl);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .horizontal-timeline::-webkit-scrollbar {
+            display: none;
+        }
+
+        .timeline-card {
+            flex: 0 0 350px;
+            scroll-snap-align: center;
+            background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: var(--space-lg);
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-card:hover {
+            transform: translateY(-10px);
+            border-color: #ffdf00;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #ffdf00;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 223, 0, 0.5);
+        }
+
+        .timeline-card::after {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: calc(50% + 20px);
+            width: calc(100% + var(--space-lg) - 40px);
+            height: 2px;
+            background: linear-gradient(90deg, #ffdf00, rgba(255, 223, 0, 0.2));
+        }
+
+        .timeline-card:last-child::after {
+            display: none;
+        }
+
+        .card-number {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            font-size: 3rem;
+            font-weight: bold;
+            color: rgba(255, 223, 0, 0.15);
+            line-height: 1;
+        }
+
+        .timeline-card h3 {
+            color: #ffdf00;
+            font-size: 1.3rem;
+            margin-bottom: var(--space-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .timeline-card p {
+            color: var(--color-text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .timeline-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .nav-arrows {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            margin-top: var(--space-md);
+        }
+
+        .nav-arrow {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            background: transparent;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-arrow:hover {
+            border-color: #ffdf00;
+            color: #ffdf00;
+            background: rgba(255, 223, 0, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-card {
+                flex: 0 0 300px;
+            }
+
+            .story-hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="version-indicator">Timeline Version 1 - Horizontal Scroll</div>
+
+    <header>
+        <img src="images/logojpeg.svg" alt="Iconoclast Handshapes Logo" class="logo">
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li class="dropdown">
+                <a href="story.html" class="active">Story ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="story-v1.html">V1 - Horizontal</a></li>
+                    <li><a href="story-v2.html">V2 - Immersive</a></li>
+                    <li><a href="story-v3.html">V3 - Minimal</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="boards.html">Boards ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="boards-v1.html">V1 - Cards</a></li>
+                    <li><a href="boards-v2.html">V2 - Accordion</a></li>
+                    <li><a href="boards-v3.html">V3 - Editorial</a></li>
+                </ul>
+            </li>
+            <li><a href="instagram.html">Follow</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section class="story-hero">
+            <h1>The Journey</h1>
+            <p>From learning to surf on Oahu to shaping boards for world champions</p>
+        </section>
+
+        <div class="horizontal-timeline-wrapper">
+            <p class="scroll-hint">← Scroll to explore →</p>
+
+            <div class="horizontal-timeline" id="timeline">
+                <div class="timeline-card">
+                    <span class="card-number">01</span>
+                    <div class="icon">🌊</div>
+                    <h3>The Beginning</h3>
+                    <p>At 18, Mike Wallace learned to surf on Oahu. A late start, but he made up for it with a vengeance – eventually coaching the Half Moon Bay high school surf team.</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="card-number">02</span>
+                    <div class="icon">🔧</div>
+                    <h3>First Shapes</h3>
+                    <p>Influenced by Marc Andreini, George Greenough, and Michel Junod, Mike shaped his first board while writing for SurfPulse. A 5'10" fish inspired by Chris Christenson.</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="card-number">03</span>
+                    <div class="icon">🏆</div>
+                    <h3>Recognition</h3>
+                    <p>Placed twice in the Boardroom Show's "Best in Show" – tying for first with a finless model and top three for an innovative flax-basalt twin fish.</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="card-number">04</span>
+                    <div class="icon">🌿</div>
+                    <h3>Innovation</h3>
+                    <p>Experimentation with flax-basalt, agave, carbon-innegra, and epoxy bio-resin. Pushing boundaries with Polyola, Grow Blanks, and sustainable materials.</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="card-number">05</span>
+                    <div class="icon">🦈</div>
+                    <h3>Big Wave</h3>
+                    <p>Now collaborating with 3x World Champ Grant "Twiggy" Baker and Mavericks chargers Wilem Banks and Steve Rice on edge board guns.</p>
+                </div>
+
+                <div class="timeline-card">
+                    <span class="card-number">06</span>
+                    <div class="icon">🔮</div>
+                    <h3>The Future</h3>
+                    <p>Collaborating with SwellCycle on 3D printed boards using recycled plastic hospital trays. Part of Sustainable Surf's ECOBOARD Project.</p>
+                </div>
+            </div>
+
+            <div class="nav-arrows">
+                <button class="nav-arrow" onclick="scrollTimeline(-1)">←</button>
+                <button class="nav-arrow" onclick="scrollTimeline(1)">→</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Handcrafted Surfboards by Mike Wallace</p>
+        <ul class="footer-links">
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        function scrollTimeline(direction) {
+            const timeline = document.getElementById('timeline');
+            const cardWidth = 350 + 32; // card width + gap
+            timeline.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+        }
+    </script>
+    <script src="js/customizer.js"></script>
+</body>
+</html>

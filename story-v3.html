@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story - Iconoclast Handshapes</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* V3: Minimal Typographic Timeline */
+        .version-indicator {
+            text-align: center;
+            padding: var(--space-sm);
+            background: rgba(255, 223, 0, 0.1);
+            color: #ffdf00;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .minimal-hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .minimal-hero h1 {
+            font-size: 6rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--space-sm);
+        }
+
+        .minimal-hero .year-range {
+            font-size: 1.2rem;
+            color: #ffdf00;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .chapter {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: var(--space-xl);
+            position: relative;
+        }
+
+        .chapter::before {
+            content: '';
+            position: absolute;
+            left: 60px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(180deg, transparent, rgba(255, 223, 0, 0.3), transparent);
+        }
+
+        .chapter-marker {
+            text-align: right;
+            padding-right: var(--space-lg);
+            position: relative;
+        }
+
+        .chapter-marker::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background: #ffdf00;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 223, 0, 0.5);
+        }
+
+        .chapter-number {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 5px;
+        }
+
+        .chapter-label {
+            font-size: 1rem;
+            color: #ffdf00;
+            font-weight: 600;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            letter-spacing: 0.1em;
+        }
+
+        .chapter-content {
+            padding-left: var(--space-lg);
+        }
+
+        .chapter-content h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: var(--space-md);
+            font-weight: 300;
+            line-height: 1.2;
+        }
+
+        .chapter-content h2 strong {
+            font-weight: 700;
+            color: #ffdf00;
+        }
+
+        .chapter-content p {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 2;
+            max-width: 600px;
+        }
+
+        .chapter-image {
+            margin-top: var(--space-lg);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .chapter-image img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            filter: grayscale(30%);
+            transition: all 0.5s ease;
+        }
+
+        .chapter-image:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+
+        .chapter-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid rgba(255, 223, 0, 0.3);
+            border-radius: var(--radius-lg);
+            pointer-events: none;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: var(--space-xl);
+            margin-top: var(--space-lg);
+            padding-top: var(--space-lg);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ffdf00;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .divider {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            text-align: center;
+        }
+
+        .divider-line {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .divider-line::before,
+        .divider-line::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 223, 0, 0.3), transparent);
+        }
+
+        .divider-icon {
+            font-size: 1.5rem;
+        }
+
+        .manifesto {
+            max-width: 800px;
+            margin: var(--space-xl) auto;
+            padding: var(--space-xl);
+            text-align: center;
+        }
+
+        .manifesto h2 {
+            font-size: 1rem;
+            color: #ffdf00;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: var(--space-lg);
+        }
+
+        .manifesto p {
+            font-size: 1.8rem;
+            color: #fff;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .manifesto p strong {
+            color: #ffdf00;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .minimal-hero h1 {
+                font-size: 3rem;
+            }
+
+            .chapter {
+                grid-template-columns: 1fr;
+                gap: var(--space-md);
+            }
+
+            .chapter::before {
+                display: none;
+            }
+
+            .chapter-marker {
+                text-align: left;
+                padding-right: 0;
+                display: flex;
+                align-items: center;
+                gap: var(--space-sm);
+            }
+
+            .chapter-marker::after {
+                position: static;
+            }
+
+            .chapter-label {
+                writing-mode: horizontal-tb;
+                transform: none;
+            }
+
+            .chapter-content {
+                padding-left: 0;
+            }
+
+            .chapter-content h2 {
+                font-size: 1.8rem;
+            }
+
+            .stats-row {
+                flex-wrap: wrap;
+                gap: var(--space-md);
+            }
+
+            .stat {
+                flex: 1 1 40%;
+            }
+
+            .manifesto p {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="version-indicator">Timeline Version 3 - Minimal</div>
+
+    <header>
+        <img src="images/logojpeg.svg" alt="Iconoclast Handshapes Logo" class="logo">
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li class="dropdown">
+                <a href="story.html" class="active">Story ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="story-v1.html">V1 - Horizontal</a></li>
+                    <li><a href="story-v2.html">V2 - Immersive</a></li>
+                    <li><a href="story-v3.html">V3 - Minimal</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="boards.html">Boards ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="boards-v1.html">V1 - Cards</a></li>
+                    <li><a href="boards-v2.html">V2 - Accordion</a></li>
+                    <li><a href="boards-v3.html">V3 - Editorial</a></li>
+                </ul>
+            </li>
+            <li><a href="instagram.html">Follow</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section class="minimal-hero">
+            <h1>Story</h1>
+            <span class="year-range">2004 — Present</span>
+        </section>
+
+        <div class="chapter">
+            <div class="chapter-marker">
+                <div class="chapter-number">Chapter</div>
+                <div class="chapter-label">One</div>
+            </div>
+            <div class="chapter-content">
+                <h2>Learning to surf at <strong>18</strong> on the shores of Oahu</h2>
+                <p>A late start, but Mike Wallace made up for it with a vengeance. Drawn into the art of shaping boards for family and friends, he was influenced by legends: Marc Andreini, George Greenough, Michel Junod.</p>
+                <div class="chapter-image">
+                    <img src="images/shaping.jpg" alt="Early shaping days">
+                </div>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="divider-line">
+                <span class="divider-icon">◆</span>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-marker">
+                <div class="chapter-number">Chapter</div>
+                <div class="chapter-label">Two</div>
+            </div>
+            <div class="chapter-content">
+                <h2>The first board: a <strong>5'10" fish</strong> inspired by Christenson</h2>
+                <p>Following an interview on computer shaping with Matt Ambrose in Pacifica, the first shape emerged. Like that very first fish, Wallace took to shaping like water – designing boards eventually took over his life.</p>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="divider-line">
+                <span class="divider-icon">◆</span>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-marker">
+                <div class="chapter-number">Chapter</div>
+                <div class="chapter-label">Three</div>
+            </div>
+            <div class="chapter-content">
+                <h2>Pushing boundaries with <strong>sustainable materials</strong></h2>
+                <p>Flax-basalt. Agave. Carbon-innegra. Epoxy bio-resin. Polyola. Grow Blanks. Continuously pushing the boundaries of what's possible in board design and environmental responsibility.</p>
+                <div class="chapter-image">
+                    <img src="images/bassalt.jpg" alt="Flax-basalt construction">
+                </div>
+                <div class="stats-row">
+                    <div class="stat">
+                        <span class="stat-value">2×</span>
+                        <span class="stat-label">Best in Show</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">20+</span>
+                        <span class="stat-label">Years Shaping</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-value">3×</span>
+                        <span class="stat-label">World Champ Collab</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider">
+            <div class="divider-line">
+                <span class="divider-icon">◆</span>
+            </div>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-marker">
+                <div class="chapter-number">Chapter</div>
+                <div class="chapter-label">Four</div>
+            </div>
+            <div class="chapter-content">
+                <h2>Shaping guns for <strong>Mavericks</strong> and beyond</h2>
+                <p>Now collaborating with 3-time World Surf Champion Grant "Twiggy" Baker, and Mavericks chargers Wilem Banks and Steve Rice. Edge board guns refined for the world's heaviest waves.</p>
+                <div class="chapter-image">
+                    <img src="images/twig.jpg" alt="Big wave guns">
+                </div>
+            </div>
+        </div>
+
+        <div class="manifesto">
+            <h2>The Philosophy</h2>
+            <p>"I feel as if I'm part of a collective of like-minded shapers seeking to <strong>innovate</strong> and improve our lot and move up the food chain to more <strong>enlightened practices</strong>."</p>
+        </div>
+
+        <div class="chapter">
+            <div class="chapter-marker">
+                <div class="chapter-number">Chapter</div>
+                <div class="chapter-label">Five</div>
+            </div>
+            <div class="chapter-content">
+                <h2>The future: <strong>3D printed</strong> closed-loop manufacturing</h2>
+                <p>Collaborating with SwellCycle on 3D printed boards using recycled plastic hospital trays. A proud participant in Sustainable Surf's ECOBOARD Project. The evolution continues.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Handcrafted Surfboards by Mike Wallace</p>
+        <ul class="footer-links">
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
+        </ul>
+    </footer>
+
+    <script src="js/customizer.js"></script>
+</body>
+</html>
