@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Board Designer - Iconoclast Handshapes</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .designer-page {
+            min-height: 100vh;
+            padding: var(--space-lg) var(--space-md);
+        }
+
+        .designer-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .designer-header h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .designer-header .subtitle {
+            color: #ffdf00;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: var(--space-sm);
+        }
+
+        .designer-header p {
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .designer-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: var(--space-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Board Preview Area */
+        .board-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            min-height: 700px;
+            position: relative;
+        }
+
+        .board-svg-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .board-svg {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 20px 40px rgba(0,0,0,0.4));
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .board-dimensions {
+            margin-top: var(--space-lg);
+            text-align: center;
+            padding: var(--space-md);
+            background: rgba(255, 223, 0, 0.1);
+            border: 1px solid rgba(255, 223, 0, 0.2);
+            border-radius: var(--radius-md);
+        }
+
+        .board-dimensions h3 {
+            color: #ffdf00;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-xs);
+        }
+
+        .board-dimensions p {
+            color: var(--color-text);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+        }
+
+        .control-section {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .control-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .control-section h3 {
+            color: #ffdf00;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .control-section h3::before {
+            content: '';
+            width: 12px;
+            height: 2px;
+            background: #ffdf00;
+        }
+
+        /* Option Buttons Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-sm);
+        }
+
+        .option-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--space-md);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            color: var(--color-text);
+        }
+
+        .option-btn:hover {
+            border-color: rgba(255, 223, 0, 0.4);
+            background: rgba(255, 223, 0, 0.05);
+        }
+
+        .option-btn.active {
+            border-color: #ffdf00;
+            background: rgba(255, 223, 0, 0.1);
+        }
+
+        .option-btn svg {
+            width: 60px;
+            height: 80px;
+            margin-bottom: var(--space-xs);
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            transition: all var(--transition-base);
+        }
+
+        .option-btn.active svg {
+            stroke: #ffdf00;
+        }
+
+        .option-btn span {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        /* Sliders */
+        .slider-control {
+            margin-bottom: var(--space-md);
+        }
+
+        .slider-control:last-child {
+            margin-bottom: 0;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-xs);
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+        }
+
+        .slider-value {
+            color: #ffdf00;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #ffdf00;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Color Picker */
+        .color-options {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            border: 2px solid transparent;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        .color-swatch.active {
+            border-color: #fff;
+            box-shadow: 0 0 0 2px #ffdf00;
+        }
+
+        /* Fin Setup */
+        .fin-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-sm);
+        }
+
+        .fin-btn {
+            padding: var(--space-sm);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            color: var(--color-text);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        .fin-btn:hover {
+            border-color: rgba(255, 223, 0, 0.4);
+        }
+
+        .fin-btn.active {
+            border-color: #ffdf00;
+            background: rgba(255, 223, 0, 0.1);
+            color: #ffdf00;
+        }
+
+        /* Summary Button */
+        .summary-btn {
+            width: 100%;
+            padding: var(--space-md);
+            background: #ffdf00;
+            color: #1a1a1a;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all var(--transition-base);
+            margin-top: var(--space-lg);
+        }
+
+        .summary-btn:hover {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 223, 0, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .designer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .board-preview {
+                min-height: 500px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fin-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Stringer line */
+        .stringer {
+            stroke: rgba(139, 90, 43, 0.6);
+            stroke-width: 1.5;
+            stroke-dasharray: none;
+        }
+
+        /* 3D rotation effect */
+        .board-preview:hover .board-svg {
+            transform: perspective(1000px) rotateY(-5deg);
+        }
+
+        /* Experimental badge */
+        .experimental-badge {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa502 100%);
+            color: #fff;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="images/logojpeg.svg" alt="Iconoclast Handshapes Logo" class="logo">
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li class="dropdown">
+                <a href="story.html">Story ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="story-v1.html">V1 - Horizontal</a></li>
+                    <li><a href="story-v2.html">V2 - Immersive</a></li>
+                    <li><a href="story-v3.html">V3 - Minimal</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="boards.html">Boards ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="boards-v1.html">V1 - Cards</a></li>
+                    <li><a href="boards-v2.html">V2 - Accordion</a></li>
+                    <li><a href="boards-v3.html">V3 - Editorial</a></li>
+                </ul>
+            </li>
+            <li><a href="instagram.html">Follow</a></li>
+            <li><a href="designer.html" class="active">Designer</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content designer-page">
+        <div class="designer-header">
+            <p class="subtitle">Experimental</p>
+            <h1>Board Designer</h1>
+            <p>Craft your dream surfboard. Choose your nose shape, tail style, dimensions, and color to visualize your custom Iconoclast shape.</p>
+        </div>
+
+        <div class="designer-container">
+            <div class="board-preview">
+                <span class="experimental-badge">Beta</span>
+                <div class="board-svg-container">
+                    <svg class="board-svg" viewBox="0 0 200 600" id="boardSvg">
+                        <defs>
+                            <linearGradient id="boardGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#f5f0e8;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#e8e0d4;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="railGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#8b5a2b;stop-opacity:0.3" />
+                                <stop offset="50%" style="stop-color:#d4a574;stop-opacity:0.1" />
+                                <stop offset="100%" style="stop-color:#8b5a2b;stop-opacity:0.3" />
+                            </linearGradient>
+                        </defs>
+                        <!-- Board outline will be drawn by JS -->
+                        <path id="boardOutline" fill="url(#boardGradient)" stroke="#8b5a2b" stroke-width="2"/>
+                        <path id="boardRail" fill="url(#railGradient)" stroke="none"/>
+                        <!-- Stringer -->
+                        <line id="stringer" class="stringer" x1="100" y1="30" x2="100" y2="570"/>
+                        <!-- Fins will be drawn based on selection -->
+                        <g id="finsGroup"></g>
+                    </svg>
+                </div>
+                <div class="board-dimensions">
+                    <h3>Dimensions</h3>
+                    <p id="dimensionDisplay">6'2" x 20.5" x 2.5"</p>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <!-- Nose Shape -->
+                <div class="control-section">
+                    <h3>Nose Shape</h3>
+                    <div class="options-grid" id="noseOptions">
+                        <div class="option-btn active" data-nose="pointed">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M30 5 L50 75 L10 75 Z" fill="none"/>
+                            </svg>
+                            <span>Pointed</span>
+                        </div>
+                        <div class="option-btn" data-nose="round">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 75 Q10 5 30 5 Q50 5 50 75" fill="none"/>
+                            </svg>
+                            <span>Round</span>
+                        </div>
+                        <div class="option-btn" data-nose="squash">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 75 L10 25 Q10 10 25 10 L35 10 Q50 10 50 25 L50 75" fill="none"/>
+                            </svg>
+                            <span>Squash</span>
+                        </div>
+                        <div class="option-btn" data-nose="bullet">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 75 Q5 40 30 5 Q55 40 50 75" fill="none"/>
+                            </svg>
+                            <span>Bullet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tail Shape -->
+                <div class="control-section">
+                    <h3>Tail Shape</h3>
+                    <div class="options-grid" id="tailOptions">
+                        <div class="option-btn" data-tail="squash">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 5 L10 55 Q10 70 25 70 L35 70 Q50 70 50 55 L50 5" fill="none"/>
+                            </svg>
+                            <span>Squash</span>
+                        </div>
+                        <div class="option-btn active" data-tail="swallow">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 5 L10 50 L15 70 L25 55 L30 60 L35 55 L45 70 L50 50 L50 5" fill="none"/>
+                            </svg>
+                            <span>Swallow</span>
+                        </div>
+                        <div class="option-btn" data-tail="pin">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 5 L10 40 Q10 75 30 75 Q50 75 50 40 L50 5" fill="none"/>
+                            </svg>
+                            <span>Pin</span>
+                        </div>
+                        <div class="option-btn" data-tail="round">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 5 L10 45 Q10 70 30 70 Q50 70 50 45 L50 5" fill="none"/>
+                            </svg>
+                            <span>Round</span>
+                        </div>
+                        <div class="option-btn" data-tail="diamond">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 5 L10 45 L20 60 L30 75 L40 60 L50 45 L50 5" fill="none"/>
+                            </svg>
+                            <span>Diamond</span>
+                        </div>
+                        <div class="option-btn" data-tail="bat">
+                            <svg viewBox="0 0 60 80">
+                                <path d="M10 5 L10 50 L5 70 L30 60 L55 70 L50 50 L50 5" fill="none"/>
+                            </svg>
+                            <span>Bat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dimensions -->
+                <div class="control-section">
+                    <h3>Dimensions</h3>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Length</span>
+                            <span class="slider-value" id="lengthValue">6'2"</span>
+                        </div>
+                        <input type="range" id="lengthSlider" min="50" max="96" value="74">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Width</span>
+                            <span class="slider-value" id="widthValue">20.5"</span>
+                        </div>
+                        <input type="range" id="widthSlider" min="17" max="24" value="20" step="0.25">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Thickness</span>
+                            <span class="slider-value" id="thicknessValue">2.5"</span>
+                        </div>
+                        <input type="range" id="thicknessSlider" min="2" max="4" value="2.5" step="0.125">
+                    </div>
+                </div>
+
+                <!-- Fin Setup -->
+                <div class="control-section">
+                    <h3>Fin Setup</h3>
+                    <div class="fin-options" id="finOptions">
+                        <div class="fin-btn" data-fins="single">Single</div>
+                        <div class="fin-btn" data-fins="twin">Twin</div>
+                        <div class="fin-btn active" data-fins="thruster">Thruster</div>
+                        <div class="fin-btn" data-fins="quad">Quad</div>
+                        <div class="fin-btn" data-fins="bonzer">Bonzer</div>
+                        <div class="fin-btn" data-fins="2plus1">2+1</div>
+                        <div class="fin-btn" data-fins="five">5-Fin</div>
+                        <div class="fin-btn" data-fins="none">Finless</div>
+                    </div>
+                </div>
+
+                <!-- Color -->
+                <div class="control-section">
+                    <h3>Board Color</h3>
+                    <div class="color-options" id="colorOptions">
+                        <div class="color-swatch active" data-color="#f5f0e8" style="background: linear-gradient(135deg, #f5f0e8, #fff);" title="Natural"></div>
+                        <div class="color-swatch" data-color="#4a6670" style="background: #4a6670;" title="Slate Ocean"></div>
+                        <div class="color-swatch" data-color="#5d6b4d" style="background: #5d6b4d;" title="Seaweed"></div>
+                        <div class="color-swatch" data-color="#8b5a2b" style="background: #8b5a2b;" title="Driftwood"></div>
+                        <div class="color-swatch" data-color="#1a1a1a" style="background: #1a1a1a;" title="Carbon"></div>
+                        <div class="color-swatch" data-color="#c9a86c" style="background: linear-gradient(135deg, #c9a86c, #f0d090);" title="Flax"></div>
+                        <div class="color-swatch" data-color="#3d4f5f" style="background: linear-gradient(135deg, #3d4f5f, #6b8fa3);" title="Basalt"></div>
+                        <div class="color-swatch" data-color="#ffdf00" style="background: #ffdf00;" title="Iconoclast Gold"></div>
+                    </div>
+                </div>
+
+                <button class="summary-btn" id="summaryBtn">View Build Summary</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Handcrafted Surfboards by Mike Wallace</p>
+        <ul class="footer-links">
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
+        </ul>
+    </footer>
+
+    <script src="js/customizer.js"></script>
+    <script>
+        // Board Designer State
+        const state = {
+            nose: 'pointed',
+            tail: 'swallow',
+            length: 74, // inches
+            width: 20.5,
+            thickness: 2.5,
+            fins: 'thruster',
+            color: '#f5f0e8'
+        };
+
+        // Constants
+        const SVG_WIDTH = 200;
+        const CENTER_X = 100;
+        const MIN_LENGTH = 50;  // 4'2"
+        const MAX_LENGTH = 96;  // 8'0"
+        const MIN_HEIGHT = 350;
+        const MAX_HEIGHT = 580;
+        const PADDING_TOP = 20;
+        const PADDING_BOTTOM = 20;
+
+        // DOM Elements
+        const boardSvg = document.getElementById('boardSvg');
+        const boardOutline = document.getElementById('boardOutline');
+        const finsGroup = document.getElementById('finsGroup');
+        const stringer = document.getElementById('stringer');
+        const dimensionDisplay = document.getElementById('dimensionDisplay');
+
+        function map(value, inMin, inMax, outMin, outMax) {
+            return (value - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+        }
+
+        function drawBoard() {
+            // Calculate dimensions
+            const boardHeight = map(state.length, MIN_LENGTH, MAX_LENGTH, MIN_HEIGHT, MAX_HEIGHT);
+            const boardWidth = map(state.width, 17, 24, 70, 120);
+            const halfWidth = boardWidth / 2;
+
+            // Key Y positions
+            const noseY = PADDING_TOP;
+            const tailY = PADDING_TOP + boardHeight;
+            const noseEndY = noseY + boardHeight * 0.18; // Where nose blends into rail
+            const widePointY = noseY + boardHeight * 0.45; // Widest point of board
+            const tailStartY = tailY - boardHeight * 0.15; // Where tail begins
+
+            // Update SVG viewBox to fit board
+            const totalHeight = boardHeight + PADDING_TOP + PADDING_BOTTOM;
+            boardSvg.setAttribute('viewBox', `0 0 ${SVG_WIDTH} ${totalHeight}`);
+
+            // Build the board outline path
+            let path = '';
+
+            // Start at nose tip
+            const noseWidth = state.nose === 'squash' ? halfWidth * 0.5 : 0;
+
+            // === LEFT SIDE (top to bottom) ===
+
+            // Nose shape
+            if (state.nose === 'pointed') {
+                // Sharp pointed nose
+                path = `M ${CENTER_X} ${noseY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.3} ${noseY + boardHeight * 0.05},`;
+                path += ` ${CENTER_X - halfWidth * 0.8} ${noseY + boardHeight * 0.1},`;
+                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+            } else if (state.nose === 'round') {
+                // Full round nose
+                path = `M ${CENTER_X} ${noseY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.8} ${noseY},`;
+                path += ` ${CENTER_X - halfWidth} ${noseY + boardHeight * 0.03},`;
+                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+            } else if (state.nose === 'squash') {
+                // Squash/flat nose with rounded corners
+                path = `M ${CENTER_X - halfWidth * 0.35} ${noseY}`;
+                path += ` L ${CENTER_X - halfWidth * 0.35} ${noseY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.7} ${noseY},`;
+                path += ` ${CENTER_X - halfWidth} ${noseY + boardHeight * 0.02},`;
+                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+            } else if (state.nose === 'bullet') {
+                // Bullet/egg nose - rounder than pointed but not as round
+                path = `M ${CENTER_X} ${noseY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.5} ${noseY + boardHeight * 0.02},`;
+                path += ` ${CENTER_X - halfWidth * 0.9} ${noseY + boardHeight * 0.06},`;
+                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+            }
+
+            // Left rail - slight curve out to wide point, then in to tail
+            path += ` C ${CENTER_X - halfWidth * 1.02} ${widePointY * 0.7},`;
+            path += ` ${CENTER_X - halfWidth * 1.02} ${widePointY},`;
+            path += ` ${CENTER_X - halfWidth} ${widePointY}`;
+            path += ` C ${CENTER_X - halfWidth * 1.02} ${widePointY},`;
+            path += ` ${CENTER_X - halfWidth * 1.0} ${tailStartY * 0.95},`;
+            path += ` ${CENTER_X - halfWidth * 0.95} ${tailStartY}`;
+
+            // === TAIL SHAPE ===
+            const tailWidth = halfWidth * 0.9;
+
+            if (state.tail === 'squash') {
+                // Squash tail - flat bottom with rounded corners
+                path += ` L ${CENTER_X - tailWidth} ${tailY - 20}`;
+                path += ` Q ${CENTER_X - tailWidth} ${tailY}, ${CENTER_X - tailWidth * 0.5} ${tailY}`;
+                path += ` L ${CENTER_X + tailWidth * 0.5} ${tailY}`;
+                path += ` Q ${CENTER_X + tailWidth} ${tailY}, ${CENTER_X + tailWidth} ${tailY - 20}`;
+            } else if (state.tail === 'swallow') {
+                // Swallow tail - V notch in center
+                const notchDepth = 25;
+                const notchWidth = halfWidth * 0.25;
+                path += ` L ${CENTER_X - tailWidth} ${tailY - notchDepth}`;
+                path += ` L ${CENTER_X - tailWidth * 0.4} ${tailY}`;
+                path += ` L ${CENTER_X - notchWidth} ${tailY - 5}`;
+                path += ` Q ${CENTER_X} ${tailY - notchDepth * 0.6}, ${CENTER_X + notchWidth} ${tailY - 5}`;
+                path += ` L ${CENTER_X + tailWidth * 0.4} ${tailY}`;
+                path += ` L ${CENTER_X + tailWidth} ${tailY - notchDepth}`;
+            } else if (state.tail === 'pin') {
+                // Pin tail - comes to a rounded point
+                path += ` Q ${CENTER_X - tailWidth * 0.8} ${tailY - 10},`;
+                path += ` ${CENTER_X} ${tailY}`;
+                path += ` Q ${CENTER_X + tailWidth * 0.8} ${tailY - 10},`;
+                path += ` ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+            } else if (state.tail === 'round') {
+                // Round tail - smooth semicircle
+                path += ` Q ${CENTER_X - tailWidth} ${tailY}, ${CENTER_X} ${tailY + 5}`;
+                path += ` Q ${CENTER_X + tailWidth} ${tailY}, ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+            } else if (state.tail === 'diamond') {
+                // Diamond tail - angular point
+                path += ` L ${CENTER_X - tailWidth * 0.7} ${tailY - 15}`;
+                path += ` L ${CENTER_X} ${tailY}`;
+                path += ` L ${CENTER_X + tailWidth * 0.7} ${tailY - 15}`;
+                path += ` L ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+            } else if (state.tail === 'bat') {
+                // Bat tail - wide with center notch
+                path += ` L ${CENTER_X - tailWidth * 1.1} ${tailY - 5}`;
+                path += ` Q ${CENTER_X} ${tailY - 20}, ${CENTER_X + tailWidth * 1.1} ${tailY - 5}`;
+                path += ` L ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+            }
+
+            // === RIGHT SIDE (bottom to top) ===
+            // Only add if tail doesn't already complete the right side
+            if (state.tail !== 'pin' && state.tail !== 'round' && state.tail !== 'diamond' && state.tail !== 'bat') {
+                path += ` L ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+            }
+
+            // Right rail
+            path += ` C ${CENTER_X + halfWidth * 1.0} ${tailStartY * 0.95},`;
+            path += ` ${CENTER_X + halfWidth * 1.02} ${widePointY},`;
+            path += ` ${CENTER_X + halfWidth} ${widePointY}`;
+            path += ` C ${CENTER_X + halfWidth * 1.02} ${widePointY},`;
+            path += ` ${CENTER_X + halfWidth * 1.02} ${widePointY * 0.7},`;
+            path += ` ${CENTER_X + halfWidth} ${noseEndY}`;
+
+            // Right nose (mirror of left)
+            if (state.nose === 'pointed') {
+                path += ` C ${CENTER_X + halfWidth * 0.8} ${noseY + boardHeight * 0.1},`;
+                path += ` ${CENTER_X + halfWidth * 0.3} ${noseY + boardHeight * 0.05},`;
+                path += ` ${CENTER_X} ${noseY}`;
+            } else if (state.nose === 'round') {
+                path += ` C ${CENTER_X + halfWidth} ${noseY + boardHeight * 0.03},`;
+                path += ` ${CENTER_X + halfWidth * 0.8} ${noseY},`;
+                path += ` ${CENTER_X} ${noseY}`;
+            } else if (state.nose === 'squash') {
+                path += ` C ${CENTER_X + halfWidth} ${noseY + boardHeight * 0.02},`;
+                path += ` ${CENTER_X + halfWidth * 0.7} ${noseY},`;
+                path += ` ${CENTER_X + halfWidth * 0.35} ${noseY}`;
+                path += ` L ${CENTER_X - halfWidth * 0.35} ${noseY}`;
+            } else if (state.nose === 'bullet') {
+                path += ` C ${CENTER_X + halfWidth * 0.9} ${noseY + boardHeight * 0.06},`;
+                path += ` ${CENTER_X + halfWidth * 0.5} ${noseY + boardHeight * 0.02},`;
+                path += ` ${CENTER_X} ${noseY}`;
+            }
+
+            path += ' Z';
+
+            boardOutline.setAttribute('d', path);
+
+            // Update stringer
+            stringer.setAttribute('y1', noseY + 5);
+            stringer.setAttribute('y2', tailY - 5);
+
+            // Update color
+            updateBoardColor();
+
+            // Draw fins
+            drawFins(boardHeight, tailY, halfWidth);
+
+            // Update dimensions display
+            updateDimensionDisplay();
+        }
+
+        function drawFins(boardHeight, tailY, halfWidth) {
+            finsGroup.innerHTML = '';
+
+            // Calculate fin positions relative to board
+            const finAreaTop = tailY - boardHeight * 0.18;
+            const finAreaBottom = tailY - 15;
+
+            // Fin configurations with positions as percentages
+            const configs = {
+                none: [],
+                single: [
+                    { xOffset: 0, yPos: 0.7, size: 1.4, angle: 0, type: 'center' }
+                ],
+                twin: [
+                    { xOffset: -0.6, yPos: 0.5, size: 1.0, angle: -8, type: 'side' },
+                    { xOffset: 0.6, yPos: 0.5, size: 1.0, angle: 8, type: 'side' }
+                ],
+                thruster: [
+                    { xOffset: 0, yPos: 0.75, size: 1.2, angle: 0, type: 'center' },
+                    { xOffset: -0.55, yPos: 0.35, size: 0.85, angle: -6, type: 'side' },
+                    { xOffset: 0.55, yPos: 0.35, size: 0.85, angle: 6, type: 'side' }
+                ],
+                quad: [
+                    { xOffset: -0.65, yPos: 0.6, size: 0.9, angle: -6, type: 'side' },
+                    { xOffset: 0.65, yPos: 0.6, size: 0.9, angle: 6, type: 'side' },
+                    { xOffset: -0.5, yPos: 0.25, size: 0.75, angle: -4, type: 'side' },
+                    { xOffset: 0.5, yPos: 0.25, size: 0.75, angle: 4, type: 'side' }
+                ],
+                bonzer: [
+                    { xOffset: 0, yPos: 0.75, size: 1.2, angle: 0, type: 'center' },
+                    { xOffset: -0.45, yPos: 0.4, size: 0.5, angle: -20, type: 'runner' },
+                    { xOffset: 0.45, yPos: 0.4, size: 0.5, angle: 20, type: 'runner' }
+                ],
+                '2plus1': [
+                    { xOffset: 0, yPos: 0.7, size: 1.3, angle: 0, type: 'center' },
+                    { xOffset: -0.5, yPos: 0.35, size: 0.6, angle: -5, type: 'side' },
+                    { xOffset: 0.5, yPos: 0.35, size: 0.6, angle: 5, type: 'side' }
+                ],
+                five: [
+                    { xOffset: 0, yPos: 0.75, size: 1.1, angle: 0, type: 'center' },
+                    { xOffset: -0.6, yPos: 0.55, size: 0.8, angle: -6, type: 'side' },
+                    { xOffset: 0.6, yPos: 0.55, size: 0.8, angle: 6, type: 'side' },
+                    { xOffset: -0.45, yPos: 0.25, size: 0.65, angle: -4, type: 'side' },
+                    { xOffset: 0.45, yPos: 0.25, size: 0.65, angle: 4, type: 'side' }
+                ]
+            };
+
+            const fins = configs[state.fins] || [];
+
+            fins.forEach(fin => {
+                const finGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+                // Calculate position
+                const x = CENTER_X + (fin.xOffset * halfWidth * 0.8);
+                const y = finAreaTop + (finAreaBottom - finAreaTop) * fin.yPos;
+
+                // Create realistic fin shape
+                const finPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const size = fin.size;
+                const baseWidth = 12 * size;
+                const height = 28 * size;
+
+                // Asymmetric dorsal fin shape
+                let finD;
+                if (fin.type === 'center') {
+                    // Center fin - symmetric
+                    finD = `M 0 0
+                            C ${-baseWidth * 0.3} ${-height * 0.2}, ${-baseWidth * 0.15} ${-height * 0.8}, 0 ${-height}
+                            C ${baseWidth * 0.15} ${-height * 0.8}, ${baseWidth * 0.3} ${-height * 0.2}, 0 0`;
+                } else if (fin.type === 'runner') {
+                    // Bonzer runner - low and long
+                    finD = `M 0 0
+                            L ${-baseWidth * 0.8} ${-height * 0.15}
+                            Q ${-baseWidth * 0.3} ${-height * 0.6}, 0 ${-height * 0.5}
+                            Q ${baseWidth * 0.2} ${-height * 0.4}, ${baseWidth * 0.3} 0 Z`;
+                } else {
+                    // Side fin - swept back
+                    const sweep = fin.xOffset < 0 ? 1 : -1;
+                    finD = `M 0 0
+                            C ${-baseWidth * 0.4} ${-height * 0.1}, ${-baseWidth * 0.2 + sweep * 3} ${-height * 0.7}, ${sweep * 4} ${-height}
+                            C ${baseWidth * 0.1 + sweep * 2} ${-height * 0.75}, ${baseWidth * 0.35} ${-height * 0.15}, 0 0`;
+                }
+
+                finPath.setAttribute('d', finD);
+                finPath.setAttribute('fill', '#2a2a2a');
+                finPath.setAttribute('stroke', '#1a1a1a');
+                finPath.setAttribute('stroke-width', '1');
+
+                finGroup.setAttribute('transform', `translate(${x}, ${y}) rotate(${fin.angle})`);
+                finGroup.appendChild(finPath);
+
+                // Add fin base/tab
+                const finBase = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                finBase.setAttribute('cx', '0');
+                finBase.setAttribute('cy', '2');
+                finBase.setAttribute('rx', baseWidth * 0.4);
+                finBase.setAttribute('ry', '3');
+                finBase.setAttribute('fill', '#1a1a1a');
+                finGroup.appendChild(finBase);
+
+                finsGroup.appendChild(finGroup);
+            });
+        }
+
+        function updateBoardColor() {
+            const gradient = boardSvg.querySelector('#boardGradient');
+            if (state.color === '#f5f0e8') {
+                gradient.innerHTML = `
+                    <stop offset="0%" style="stop-color:#e8e0d4;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#ffffff;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#e8e0d4;stop-opacity:1" />
+                `;
+            } else if (state.color === '#c9a86c') {
+                gradient.innerHTML = `
+                    <stop offset="0%" style="stop-color:#a88a4c;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#f0d090;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#a88a4c;stop-opacity:1" />
+                `;
+            } else if (state.color === '#3d4f5f') {
+                gradient.innerHTML = `
+                    <stop offset="0%" style="stop-color:#2d3f4f;stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:#6b8fa3;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2d3f4f;stop-opacity:1" />
+                `;
+            } else {
+                gradient.innerHTML = `
+                    <stop offset="0%" style="stop-color:${adjustColor(state.color, -20)};stop-opacity:1" />
+                    <stop offset="50%" style="stop-color:${adjustColor(state.color, 20)};stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:${adjustColor(state.color, -20)};stop-opacity:1" />
+                `;
+            }
+        }
+
+        function adjustColor(hex, amount) {
+            const num = parseInt(hex.replace('#', ''), 16);
+            const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+            const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+            const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+            return `#${(1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1)}`;
+        }
+
+        function formatLength(inches) {
+            const feet = Math.floor(inches / 12);
+            const remainingInches = inches % 12;
+            return `${feet}'${remainingInches}"`;
+        }
+
+        function updateDimensionDisplay() {
+            dimensionDisplay.textContent = `${formatLength(state.length)} x ${state.width}" x ${state.thickness}"`;
+        }
+
+        // Event Listeners - Nose Options
+        document.querySelectorAll('#noseOptions .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#noseOptions .option-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.nose = btn.dataset.nose;
+                drawBoard();
+            });
+        });
+
+        // Event Listeners - Tail Options
+        document.querySelectorAll('#tailOptions .option-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#tailOptions .option-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.tail = btn.dataset.tail;
+                drawBoard();
+            });
+        });
+
+        // Event Listeners - Fin Options
+        document.querySelectorAll('#finOptions .fin-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#finOptions .fin-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.fins = btn.dataset.fins;
+                drawBoard();
+            });
+        });
+
+        // Event Listeners - Color Options
+        document.querySelectorAll('#colorOptions .color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                document.querySelectorAll('#colorOptions .color-swatch').forEach(s => s.classList.remove('active'));
+                swatch.classList.add('active');
+                state.color = swatch.dataset.color;
+                drawBoard();
+            });
+        });
+
+        // Event Listeners - Sliders
+        document.getElementById('lengthSlider').addEventListener('input', (e) => {
+            state.length = parseInt(e.target.value);
+            document.getElementById('lengthValue').textContent = formatLength(state.length);
+            drawBoard(); // Now redraws the board with new height
+        });
+
+        document.getElementById('widthSlider').addEventListener('input', (e) => {
+            state.width = parseFloat(e.target.value);
+            document.getElementById('widthValue').textContent = `${state.width}"`;
+            drawBoard();
+        });
+
+        document.getElementById('thicknessSlider').addEventListener('input', (e) => {
+            state.thickness = parseFloat(e.target.value);
+            document.getElementById('thicknessValue').textContent = `${state.thickness}"`;
+            updateDimensionDisplay();
+        });
+
+        // Summary Button
+        document.getElementById('summaryBtn').addEventListener('click', () => {
+            const summary = `
+Your Custom Board Design
+========================
+Nose: ${state.nose.charAt(0).toUpperCase() + state.nose.slice(1)}
+Tail: ${state.tail.charAt(0).toUpperCase() + state.tail.slice(1)}
+Dimensions: ${formatLength(state.length)} x ${state.width}" x ${state.thickness}"
+Fin Setup: ${state.fins.charAt(0).toUpperCase() + state.fins.slice(1)}
+
+Contact Mike Wallace to discuss your custom build:
+Instagram: @surf_iconoclast
+            `.trim();
+
+            alert(summary);
+        });
+
+        // Initial draw
+        drawBoard();
+    </script>
+</body>
+</html>
