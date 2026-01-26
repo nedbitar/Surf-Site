@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boards - Iconoclast Handshapes</title>
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        /* V3: Editorial/Magazine Long-form Layout */
+        .editorial-hero {
+            text-align: center;
+            padding: var(--space-xl) var(--space-md);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .editorial-hero h1 {
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--space-md);
+        }
+
+        .editorial-hero .subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+            margin-bottom: var(--space-lg);
+        }
+
+        .editorial-hero .motto {
+            display: inline-block;
+            padding: var(--space-sm) var(--space-lg);
+            border: 2px solid #ffdf00;
+            color: #ffdf00;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.9rem;
+        }
+
+        .full-width-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            margin: var(--space-lg) 0;
+        }
+
+        .editorial-section {
+            max-width: 800px;
+            margin: 0 auto var(--space-xl);
+            padding: 0 var(--space-md);
+        }
+
+        .section-label {
+            display: inline-block;
+            background: #ffdf00;
+            color: #1a1a1a;
+            padding: 0.3em 1em;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--space-md);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: var(--space-md);
+            line-height: 1.2;
+        }
+
+        .section-intro {
+            font-size: 1.15rem;
+            color: var(--color-text);
+            line-height: 1.9;
+            margin-bottom: var(--space-lg);
+        }
+
+        .model-feature {
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .model-feature:last-child {
+            border-bottom: none;
+        }
+
+        .model-feature h3 {
+            font-size: 1.4rem;
+            color: #ffdf00;
+            margin-bottom: var(--space-sm);
+        }
+
+        .model-feature p {
+            color: var(--color-text);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .image-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-sm);
+            margin: var(--space-lg) 0;
+        }
+
+        .image-row img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+
+        .pull-quote {
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+            border-left: 4px solid #ffdf00;
+            background: rgba(255, 223, 0, 0.05);
+        }
+
+        .pull-quote p {
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--color-white);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .pull-quote cite {
+            display: block;
+            margin-top: var(--space-sm);
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-style: normal;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+
+        .two-column .col h4 {
+            color: var(--color-white);
+            font-size: 1.1rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .two-column .col p {
+            color: var(--color-text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .materials-feature {
+            background: linear-gradient(135deg, rgba(255, 223, 0, 0.1) 0%, rgba(255, 223, 0, 0.02) 100%);
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+            text-align: center;
+        }
+
+        .materials-feature h2 {
+            color: #ffdf00;
+            font-size: 1.8rem;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .materials-feature p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: var(--color-text);
+            line-height: 1.9;
+            font-size: 1.05rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: var(--space-xl);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .cta-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .cta-section p {
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        .cta-section a {
+            display: inline-block;
+            padding: var(--space-sm) var(--space-lg);
+            background: #ffdf00;
+            color: #1a1a1a;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+        }
+
+        .cta-section a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 223, 0, 0.3);
+        }
+
+        .version-indicator {
+            text-align: center;
+            padding: var(--space-sm);
+            background: rgba(255, 223, 0, 0.1);
+            color: #ffdf00;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        @media (max-width: 768px) {
+            .editorial-hero h1 {
+                font-size: 2rem;
+            }
+
+            .image-row {
+                grid-template-columns: 1fr;
+            }
+
+            .image-row img {
+                height: 250px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width-image {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="version-indicator">Layout Version 3 - Editorial</div>
+
+    <header>
+        <img src="images/logojpeg.svg" alt="Iconoclast Handshapes Logo" class="logo">
+    </header>
+
+    <nav class="nav">
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="story.html">Story</a></li>
+            <li class="dropdown">
+                <a href="boards.html" class="active">Boards ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="boards-v1.html">V1 - Cards</a></li>
+                    <li><a href="boards-v2.html">V2 - Accordion</a></li>
+                    <li><a href="boards-v3.html">V3 - Editorial</a></li>
+                </ul>
+            </li>
+            <li><a href="instagram.html">Follow</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-content">
+        <section class="editorial-hero">
+            <h1>Our Models</h1>
+            <p class="subtitle">Iconoclast board models are constantly evolving, tapping elements of the most dynamic designs from the relatively short history of surfing and blending those with the best materials to create a superior and unique surfing experience.</p>
+            <span class="motto">Don't Be a Sheep</span>
+        </section>
+
+        <img src="images/shaping.jpg" alt="Board shaping process" class="full-width-image">
+
+        <section class="editorial-section">
+            <span class="section-label">Philosophy</span>
+            <p class="section-intro">In the search for speed, power, and flow, there are a vast number of ways to hit those abstract targets in the dynamic environment in which we play, but the subjective sensation of style and grace is often overlooked. Do you want to continue to flap around on too small a shortboard in marginal surf until middle age? Or do you want to cleverly connect the dots from peak to peak and finish in the sand? Alternative designs can take you places on water where glide conquers bog and nirvana is achieved.</p>
+
+            <div class="pull-quote">
+                <p>"If you find yourself stagnant and not innovating, you'll be left behind. We're constantly seeking to innovate."</p>
+                <cite>— Mike Wallace, Founder</cite>
+            </div>
+        </section>
+
+        <div class="image-row">
+            <img src="images/bassalt.jpg" alt="Flax-Basalt board">
+            <img src="images/twig.jpg" alt="Twiggy board">
+            <img src="images/bonz.jpg" alt="Bonzer board">
+        </div>
+
+        <!-- Small Wave Section -->
+        <section class="editorial-section">
+            <span class="section-label">Small Wave</span>
+            <h2 class="section-title">Designs for Everyday Conditions</h2>
+
+            <div class="model-feature">
+                <h3>The Fish</h3>
+                <p>The Fish began its ascent as a wide-short kneeboard along the jagged cliffs of Point Loma in San Diego, under the astute guidance of Steve Lis and Skip Fry. Spawned by the San Diego School, this efficient displacement hull was so practical that, like a fin-legged Coelacanth, it evolved into a connective species for upright bi-pedal surfers too. These range from the very short 5-5 zone to a "long fish."</p>
+            </div>
+
+            <div class="model-feature">
+                <h3>The Edge</h3>
+                <p>In tinkering with his Velo kneeboard and windsurfing designs, the Father of Flow, George Greenough, discovered that placing a narrower sharp planing hull inside of a wider and softer outline would create lift and reduce drag. He vividly recalls testing a 7'+ edge windsurfer at triple-overhead Flat Rock off Ballina in NSW Australia. Edge boards tend to go faster the steeper, hollower, and cleaner the wave, like no other design… EVER. We have adapted these to be more user-friendly across the range, from the fish to Mavericks guns.</p>
+            </div>
+
+            <div class="two-column">
+                <div class="col">
+                    <h4>Bonzer</h4>
+                    <p>Campbell Brothers Malcolm and Duncan pride themselves on dynamic bottom contours and complementary 3 and 5 fin designs. Tapping the Venturi Effect with radical deep concaves, spiral "Vee" and steeply canted front fin placement.</p>
+                </div>
+                <div class="col">
+                    <h4>Bonzer-Edge</h4>
+                    <p>The 2023 Best in Show at the Boardroom Show. We dropped the Bonzer inside of an edge board, resembling the fluted concaves of a power boat planing hull. Surprisingly loose and fast.</p>
+                </div>
+            </div>
+
+            <div class="two-column">
+                <div class="col">
+                    <h4>Sting</h4>
+                    <p>Ben Aipa created the sting in da islands to marry planing speed with a sharp pivot point on the rail about a third up from the tail. Think: Larry Bertelmann's signature laybacks tight in the pocket.</p>
+                </div>
+                <div class="col">
+                    <h4>Hull</h4>
+                    <p>A proper Greg Liddle-style displacement hull is a curvaceous thing of beauty and the essence of small wave efficiency. Typically paired with a flexible Volan fin, hard-wired to trim in the pocket.</p>
+                </div>
+            </div>
+
+            <div class="model-feature">
+                <h3>Finless Edge</h3>
+                <p>This model pushed the Greenough design to its logical extremity, deepening the concaves, hardening the edges, and of course removing the fins. Beautiful calligraphy was provided by my daughter Kaira and it won the second Santa Cruz Boardroom Best in Show. The 8-0 and 6-0 versions were barreled and spun at both Steamer Lane and Pipe. Not for the faint of heart or weak of knees.</p>
+            </div>
+        </section>
+
+        <img src="images/shaping2.jpg" alt="Detailed shaping work" class="full-width-image">
+
+        <!-- Mid-Length Section -->
+        <section class="editorial-section">
+            <span class="section-label">Mid-Length</span>
+            <h2 class="section-title">The Swiss Army Knife</h2>
+
+            <p class="section-intro">Mid-lengths are popular because they work in a wide variety of conditions. For some, this has been a long-term romance, not a recent fad. They don't have to be for stogie smoking board room types with pot bellies but are incredibly versatile and accommodate a wide variety of fin setups.</p>
+
+            <div class="model-feature">
+                <h3>The Sim-nough</h3>
+                <p>Our featured midlength model is a half hull up front, combined with an edge board in the rear, called the Sim-nough (Simmons + Greenough) that enjoys the benefits of incredible glide and paddle speed of a Bob Simmons hull with lift and dynamism of a George Greenough edge in the tail. These typically range from 6-6 to 8-0. They can be surfed down as a groveler or up as a mini-gun, or in between. You choose.</p>
+            </div>
+        </section>
+
+        <!-- Longboard Section -->
+        <section class="editorial-section">
+            <span class="section-label">Longboard</span>
+            <h2 class="section-title">From High-Performance to Classic Logging</h2>
+
+            <div class="two-column">
+                <div class="col">
+                    <h4>High-Performance</h4>
+                    <p>At the pointy end of the longboard spectrum – a functional tool for heavier beach breaks or larger surf where a log won't dare. Rockered out, "Vee" bottomed, reacts quickly in steeps and hollows but can still nose ride.</p>
+                </div>
+                <div class="col">
+                    <h4>Edge Longboard</h4>
+                    <p>Another option for heavier surf – the narrower center plane with round-pin tail makes for a dynamic whip. Paired with an 8.9" Greenough "PowerGlide" from True Ames. Has made Coalition finals up and down the coast.</p>
+                </div>
+            </div>
+
+            <div class="model-feature">
+                <h3>Moontail Noserider</h3>
+                <p>This adaptable model owes a debt to Hall of Fame Surfboard Builder William "Blinky" Hubina of William Dennis Surfboards in Ventura. Starting with a blended concave in the front, healthy volume in the middle, and finishing with kick in the tail. This really frees this progressive log to both glide and pivot sharply in medium surf. Sweet spot ranges from 9-3 to 9-8.</p>
+            </div>
+
+            <div class="two-column">
+                <div class="col">
+                    <h4>Glider</h4>
+                    <p>An incredibly satisfying antidote to over-active surfing. Glide along with minimalistic style like a Hawaiian chief or Skip Fry, levitating past the peons in your wake. 10' to 11'.</p>
+                </div>
+                <div class="col">
+                    <h4>Classic Log</h4>
+                    <p>Beef end-to-end with teardrop concave under nose. Finds home in small, smooth point break surf – Waikiki, Cowells, San-O. Building blocks for drop-knee turns and nose riding.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="image-row">
+            <img src="images/twig2.jpg" alt="Gun detail">
+            <img src="images/orgb.jpeg" alt="Organic board">
+            <img src="images/board.jpg" alt="Custom board">
+        </div>
+
+        <!-- Big Wave Section -->
+        <section class="editorial-section">
+            <span class="section-label">Big Wave</span>
+            <h2 class="section-title">When Conditions Get Serious</h2>
+
+            <div class="pull-quote">
+                <p>"When conditions get really serious, you want your equipment to match your ambitions, and a custom gun is your best bet."</p>
+            </div>
+
+            <div class="model-feature">
+                <h3>Step-Up & Semi-Gun</h3>
+                <p>Any number of the small wave models can be stretched out for bigger waves. A classic semi-gun starts to evolve into a different animal – trim outline with wide-point forward and volume under the chest for paddle power on demand. A rounded pintail is often the best solution for tighter hold on steeper and hollower sections. 6-10 on up to the 8-0 area. An edge board version will give you an extra gear.</p>
+            </div>
+
+            <div class="model-feature">
+                <h3>Gun</h3>
+                <p>Order them out of season, well before winter. Take your time, get them right, try them out. Work with a shaper who knows what you want. For the past several seasons, Iconoclast has been grateful to work with 3-time World Champ Grant "Twiggy" Baker, Mavericks Video Award winner Wilem Banks and Jaws aficionado Steve Rice. Each year we take a fresh look at models and materials to refine and customize guns for each rider.</p>
+            </div>
+
+            <div class="model-feature">
+                <h3>Tow Board</h3>
+                <p>Twig's tow models are based on his Nazaré boards – around 5-10 in length, 2" thick, and inside 18" wide. Shaped with heavy 5/8" T-band stringers, black tow density foam, triple-6 oz. glass on top and bottom, and carbon-innegra weave on the back third. Special sauce on the bottom contours ensures both speed and control when conditions get spicy.</p>
+            </div>
+        </section>
+
+        <section class="materials-feature">
+            <h2>A Note on Materials</h2>
+            <p>Pushing boundaries with eco-friendly materials is not only for the environment's sake but also for improved performance. Meeting Dave Rastavich in Australia in 2019, he showed us a flax fish he'd been surfing for over 5 years. Grant Newby connected us with key Australian suppliers of flax, basalt, carbon-innegra, hemp and specialized fabrics. We've experimented with Arctic Foam bio-blanks, Polyola, and Grow Blanks agave blanks with Entropy bio-resin. Most recently, a SwellCycle 3D printed blank collaboration has entered testing – filament made from recycled plastic hospital trays.</p>
+        </section>
+
+        <section class="cta-section">
+            <h2>Ready to Build Your Custom?</h2>
+            <p>Ours is truly a custom business model, with the customer at the epicenter of each project.</p>
+            <a href="https://www.instagram.com/surf_iconoclast/" target="_blank">Get in Touch</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>Handcrafted Surfboards by Mike Wallace</p>
+        <ul class="footer-links">
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
+        </ul>
+    </footer>
+    <script src="js/customizer.js"></script>
+</body>
+</html>

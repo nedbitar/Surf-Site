@@ -5,6 +5,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boards - Iconoclast Handshapes</title>
     <link rel="stylesheet" href="css/main.css">
+    <style>
+        .version-selector {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-md);
+            text-align: center;
+        }
+
+        .version-selector h1 {
+            font-size: 2.5rem;
+            margin-bottom: var(--space-md);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .version-selector .intro {
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-xl);
+            line-height: 1.8;
+        }
+
+        .version-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+        }
+
+        .version-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            text-align: center;
+            transition: all var(--transition-base);
+            text-decoration: none;
+            display: block;
+        }
+
+        .version-card:hover {
+            border-color: #ffdf00;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .version-card h2 {
+            color: #ffdf00;
+            font-size: 1.5rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .version-card .version-name {
+            color: var(--color-white);
+            font-size: 1.1rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .version-card p {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .version-card .preview-btn {
+            display: inline-block;
+            margin-top: var(--space-md);
+            padding: var(--space-xs) var(--space-md);
+            background: #ffdf00;
+            color: #1a1a1a;
+            font-weight: bold;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-base);
+        }
+
+        .version-card:hover .preview-btn {
+            background: var(--color-white);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -15,85 +97,54 @@
         <ul>
             <li><a href="home.html">Home</a></li>
             <li><a href="story.html">Story</a></li>
-            <li><a href="boards.html" class="active">Boards</a></li>
+            <li class="dropdown">
+                <a href="boards.html" class="active">Boards ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="boards-v1.html">V1 - Cards</a></li>
+                    <li><a href="boards-v2.html">V2 - Accordion</a></li>
+                    <li><a href="boards-v3.html">V3 - Editorial</a></li>
+                </ul>
+            </li>
             <li><a href="instagram.html">Follow</a></li>
         </ul>
     </nav>
 
-    <main class="boards-section">
-        <h1>Our Boards</h1>
-        <div class="boards-grid">
-            <div class="board-card">
-                <img src="images/bassalt.jpg" alt="Flax-Basalt Twin Fish">
-                <div class="board-card-content">
-                    <h3>Flax-Basalt Twin Fish</h3>
-                    <p>Award-winning design featuring sustainable flax and basalt fiber construction. Top-three finisher at the Boardroom Show's "Best in Show" competition.</p>
-                </div>
-            </div>
+    <main class="main-content">
+        <section class="version-selector">
+            <h1>Our Models</h1>
+            <p class="intro">Choose a layout version to view our complete board lineup. The client can select their preferred presentation style.</p>
 
-            <div class="board-card">
-                <img src="images/bassaltb.jpg" alt="Flax-Basalt Model B">
-                <div class="board-card-content">
-                    <h3>Flax-Basalt Model</h3>
-                    <p>Innovative eco-friendly construction using volcanic basalt fibers for strength and flax for natural flex. Bio-resin finish.</p>
-                </div>
-            </div>
+            <div class="version-cards">
+                <a href="boards-v1.html" class="version-card">
+                    <h2>V1</h2>
+                    <p class="version-name">Card Grid</p>
+                    <p>Clean grid layout with board models organized by category. Each model displayed as a card with description.</p>
+                    <span class="preview-btn">View Layout</span>
+                </a>
 
-            <div class="board-card">
-                <img src="images/twig.jpg" alt="Twiggy Edge Board Gun">
-                <div class="board-card-content">
-                    <h3>Twiggy Edge Board Gun</h3>
-                    <p>Collaboration with 3-time Big Wave World Surf Champion Grant "Twiggy" Baker. Designed for Mavericks and serious big wave charging.</p>
-                </div>
-            </div>
+                <a href="boards-v2.html" class="version-card">
+                    <h2>V2</h2>
+                    <p class="version-name">Accordion</p>
+                    <p>Collapsible sections by category. Compact and organized, allows users to expand sections of interest.</p>
+                    <span class="preview-btn">View Layout</span>
+                </a>
 
-            <div class="board-card">
-                <img src="images/twig2.jpg" alt="Twiggy Gun Detail">
-                <div class="board-card-content">
-                    <h3>Big Wave Step-Up</h3>
-                    <p>Refined edge board design tested by Mavericks chargers Wilem Banks and Steve Rice. Built for speed and control in critical conditions.</p>
-                </div>
+                <a href="boards-v3.html" class="version-card">
+                    <h2>V3</h2>
+                    <p class="version-name">Editorial</p>
+                    <p>Magazine-style long-form layout with full-width images, pull quotes, and flowing editorial content.</p>
+                    <span class="preview-btn">View Layout</span>
+                </a>
             </div>
-
-            <div class="board-card">
-                <img src="images/orgb.jpeg" alt="Organic Bio Board">
-                <div class="board-card-content">
-                    <h3>Organic Bio Board</h3>
-                    <p>Crafted using Polyola and Grow Blanks agave bio-foam. Fully sustainable construction with epoxy bio-resin glassing.</p>
-                </div>
-            </div>
-
-            <div class="board-card">
-                <img src="images/bonz.jpg" alt="The Bonz Model">
-                <div class="board-card-content">
-                    <h3>The Bonz</h3>
-                    <p>Versatile all-around performer. Hand-shaped for responsive turns and smooth glide in a variety of wave conditions.</p>
-                </div>
-            </div>
-
-            <div class="board-card">
-                <img src="images/board.jpg" alt="Classic Shortboard">
-                <div class="board-card-content">
-                    <h3>Classic Hand-Shaped</h3>
-                    <p>Traditional shaping techniques meet modern performance. Each board is custom-crafted to the rider's specifications.</p>
-                </div>
-            </div>
-
-            <div class="board-card">
-                <img src="images/proto.jpg" alt="Prototype Model">
-                <div class="board-card-content">
-                    <h3>SwellCycle 3D Prototype</h3>
-                    <p>7'2" step-up model developed in collaboration with SwellCycle. Utilizing recycled plastic in a closed-loop manufacturing process.</p>
-                </div>
-            </div>
-        </div>
+        </section>
     </main>
 
     <footer>
         <p>Handcrafted Surfboards by Mike Wallace</p>
         <ul class="footer-links">
-            <li><a href="https://www.instagram.com/iconoclasthandshapes" target="_blank">Instagram</a></li>
+            <li><a href="https://www.instagram.com/surf_iconoclast/" target="_blank">@surf_iconoclast</a></li>
         </ul>
     </footer>
+    <script src="js/customizer.js"></script>
 </body>
 </html>
