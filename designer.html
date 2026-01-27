@@ -526,6 +526,44 @@
                     </div>
                 </div>
 
+                <!-- Taper Controls -->
+                <div class="control-section">
+                    <h3>Shape Taper</h3>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Nose Taper</span>
+                            <span class="slider-value" id="noseTaperValue">20%</span>
+                        </div>
+                        <input type="range" id="noseTaperSlider" min="10" max="40" value="20">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Tail Taper</span>
+                            <span class="slider-value" id="tailTaperValue">18%</span>
+                        </div>
+                        <input type="range" id="tailTaperSlider" min="10" max="35" value="18">
+                    </div>
+                </div>
+
+                <!-- Curve Controls -->
+                <div class="control-section">
+                    <h3>Transition Curves</h3>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Nose Curve</span>
+                            <span class="slider-value" id="noseCurveValue">50%</span>
+                        </div>
+                        <input type="range" id="noseCurveSlider" min="10" max="100" value="50">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Tail Curve</span>
+                            <span class="slider-value" id="tailCurveValue">50%</span>
+                        </div>
+                        <input type="range" id="tailCurveSlider" min="10" max="100" value="50">
+                    </div>
+                </div>
+
                 <!-- Fin Setup -->
                 <div class="control-section">
                     <h3>Fin Setup</h3>
@@ -577,6 +615,10 @@
             length: 74, // inches
             width: 20.5,
             thickness: 2.5,
+            noseTaper: 20, // percentage of board length where nose blends to rail
+            tailTaper: 18, // percentage of board length where tail begins
+            noseCurve: 50, // curve intensity for nose transition (10=harsh, 100=smooth)
+            tailCurve: 50, // curve intensity for tail transition (10=harsh, 100=smooth)
             fins: 'thruster',
             color: '#f5f0e8'
         };
@@ -608,135 +650,198 @@
             const boardWidth = map(state.width, 17, 24, 70, 120);
             const halfWidth = boardWidth / 2;
 
-            // Key Y positions
+            // Use taper values from state (as percentages)
+            const noseTaperPercent = state.noseTaper / 100;
+            const tailTaperPercent = state.tailTaper / 100;
+
+            // Curve intensity (0.1 = harsh/angular, 1.0 = very smooth/round)
+            const nC = state.noseCurve / 100; // nose curve factor
+            const tC = state.tailCurve / 100; // tail curve factor
+
+            // Key Y positions based on taper controls
             const noseY = PADDING_TOP;
             const tailY = PADDING_TOP + boardHeight;
-            const noseEndY = noseY + boardHeight * 0.18; // Where nose blends into rail
-            const widePointY = noseY + boardHeight * 0.45; // Widest point of board
-            const tailStartY = tailY - boardHeight * 0.15; // Where tail begins
+            const noseEndY = noseY + boardHeight * noseTaperPercent;
+            const widePointY = noseY + boardHeight * 0.45;
+            const tailStartY = tailY - boardHeight * tailTaperPercent;
 
             // Update SVG viewBox to fit board
             const totalHeight = boardHeight + PADDING_TOP + PADDING_BOTTOM;
             boardSvg.setAttribute('viewBox', `0 0 ${SVG_WIDTH} ${totalHeight}`);
 
+            // Calculate smooth taper widths
+            const noseEndWidth = halfWidth * 0.98;
+            const tailStartWidth = halfWidth * 0.92;
+
             // Build the board outline path
             let path = '';
 
-            // Start at nose tip
-            const noseWidth = state.nose === 'squash' ? halfWidth * 0.5 : 0;
-
             // === LEFT SIDE (top to bottom) ===
 
-            // Nose shape
+            // Nose shape - curve factor affects how quickly it spreads out
+            const noseHeight = noseEndY - noseY;
             if (state.nose === 'pointed') {
-                // Sharp pointed nose
                 path = `M ${CENTER_X} ${noseY}`;
-                path += ` C ${CENTER_X - halfWidth * 0.3} ${noseY + boardHeight * 0.05},`;
-                path += ` ${CENTER_X - halfWidth * 0.8} ${noseY + boardHeight * 0.1},`;
-                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+                // nC affects the bulge - low = straight lines, high = curved
+                const cp1x = CENTER_X - halfWidth * (0.1 + nC * 0.3);
+                const cp1y = noseY + noseHeight * (0.05 + nC * 0.15);
+                const cp2x = CENTER_X - halfWidth * (0.4 + nC * 0.4);
+                const cp2y = noseY + noseHeight * (0.2 + nC * 0.3);
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
             } else if (state.nose === 'round') {
-                // Full round nose
                 path = `M ${CENTER_X} ${noseY}`;
-                path += ` C ${CENTER_X - halfWidth * 0.8} ${noseY},`;
-                path += ` ${CENTER_X - halfWidth} ${noseY + boardHeight * 0.03},`;
-                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+                const cp1x = CENTER_X - halfWidth * (0.5 + nC * 0.4);
+                const cp1y = noseY + noseHeight * (0.01 * (1 - nC));
+                const cp2x = CENTER_X - noseEndWidth * (0.9 + nC * 0.1);
+                const cp2y = noseY + noseHeight * (0.1 + nC * 0.15);
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
             } else if (state.nose === 'squash') {
-                // Squash/flat nose with rounded corners
-                path = `M ${CENTER_X - halfWidth * 0.35} ${noseY}`;
-                path += ` L ${CENTER_X - halfWidth * 0.35} ${noseY}`;
-                path += ` C ${CENTER_X - halfWidth * 0.7} ${noseY},`;
-                path += ` ${CENTER_X - halfWidth} ${noseY + boardHeight * 0.02},`;
-                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+                const squashWidth = halfWidth * 0.4;
+                path = `M ${CENTER_X - squashWidth} ${noseY}`;
+                const cp1x = CENTER_X - halfWidth * (0.5 + nC * 0.25);
+                const cp1y = noseY + noseHeight * (0.02 * (1 - nC));
+                const cp2x = CENTER_X - noseEndWidth;
+                const cp2y = noseY + noseHeight * (0.05 + nC * 0.15);
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
             } else if (state.nose === 'bullet') {
-                // Bullet/egg nose - rounder than pointed but not as round
                 path = `M ${CENTER_X} ${noseY}`;
-                path += ` C ${CENTER_X - halfWidth * 0.5} ${noseY + boardHeight * 0.02},`;
-                path += ` ${CENTER_X - halfWidth * 0.9} ${noseY + boardHeight * 0.06},`;
-                path += ` ${CENTER_X - halfWidth} ${noseEndY}`;
+                const cp1x = CENTER_X - halfWidth * (0.3 + nC * 0.3);
+                const cp1y = noseY + noseHeight * (0.03 + nC * 0.1);
+                const cp2x = CENTER_X - halfWidth * (0.65 + nC * 0.3);
+                const cp2y = noseY + noseHeight * (0.15 + nC * 0.2);
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
             }
 
-            // Left rail - slight curve out to wide point, then in to tail
-            path += ` C ${CENTER_X - halfWidth * 1.02} ${widePointY * 0.7},`;
-            path += ` ${CENTER_X - halfWidth * 1.02} ${widePointY},`;
+            // Transition from nose to wide point - nC affects smoothness
+            const noseToWide = widePointY - noseEndY;
+            const railBulge = 1.0 + nC * 0.02; // slight outward bulge for smooth boards
+            path += ` C ${CENTER_X - halfWidth * railBulge} ${noseEndY + noseToWide * (0.1 + nC * 0.2)},`;
+            path += ` ${CENTER_X - halfWidth * railBulge} ${noseEndY + noseToWide * (0.4 + nC * 0.1)},`;
             path += ` ${CENTER_X - halfWidth} ${widePointY}`;
-            path += ` C ${CENTER_X - halfWidth * 1.02} ${widePointY},`;
-            path += ` ${CENTER_X - halfWidth * 1.0} ${tailStartY * 0.95},`;
-            path += ` ${CENTER_X - halfWidth * 0.95} ${tailStartY}`;
+
+            // From wide point to tail start - tC affects smoothness
+            const wideToTail = tailStartY - widePointY;
+            const tailRailBulge = 1.0 + tC * 0.02;
+            path += ` C ${CENTER_X - halfWidth * tailRailBulge} ${widePointY + wideToTail * (0.2 + tC * 0.15)},`;
+            path += ` ${CENTER_X - tailStartWidth * tailRailBulge} ${widePointY + wideToTail * (0.5 + tC * 0.2)},`;
+            path += ` ${CENTER_X - tailStartWidth} ${tailStartY}`;
 
             // === TAIL SHAPE ===
-            const tailWidth = halfWidth * 0.9;
+            const tailWidth = tailStartWidth * 0.95;
+            const tailDepth = tailY - tailStartY;
 
+            // tC affects how smoothly the tail curves in
             if (state.tail === 'squash') {
-                // Squash tail - flat bottom with rounded corners
-                path += ` L ${CENTER_X - tailWidth} ${tailY - 20}`;
-                path += ` Q ${CENTER_X - tailWidth} ${tailY}, ${CENTER_X - tailWidth * 0.5} ${tailY}`;
-                path += ` L ${CENTER_X + tailWidth * 0.5} ${tailY}`;
-                path += ` Q ${CENTER_X + tailWidth} ${tailY}, ${CENTER_X + tailWidth} ${tailY - 20}`;
+                const curveIn1 = 0.25 + tC * 0.25;
+                const curveIn2 = 0.5 + tC * 0.25;
+                path += ` C ${CENTER_X - tailWidth * (0.95 + tC * 0.05)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X - tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X - tailWidth * 0.85} ${tailY - 8}`;
+                path += ` Q ${CENTER_X - tailWidth * 0.7} ${tailY}, ${CENTER_X - tailWidth * 0.3} ${tailY}`;
+                path += ` L ${CENTER_X + tailWidth * 0.3} ${tailY}`;
+                path += ` Q ${CENTER_X + tailWidth * 0.7} ${tailY}, ${CENTER_X + tailWidth * 0.85} ${tailY - 8}`;
+                path += ` C ${CENTER_X + tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X + tailWidth * (0.95 + tC * 0.05)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'swallow') {
-                // Swallow tail - V notch in center
-                const notchDepth = 25;
-                const notchWidth = halfWidth * 0.25;
-                path += ` L ${CENTER_X - tailWidth} ${tailY - notchDepth}`;
-                path += ` L ${CENTER_X - tailWidth * 0.4} ${tailY}`;
-                path += ` L ${CENTER_X - notchWidth} ${tailY - 5}`;
-                path += ` Q ${CENTER_X} ${tailY - notchDepth * 0.6}, ${CENTER_X + notchWidth} ${tailY - 5}`;
-                path += ` L ${CENTER_X + tailWidth * 0.4} ${tailY}`;
-                path += ` L ${CENTER_X + tailWidth} ${tailY - notchDepth}`;
+                const notchDepth = tailDepth * 0.6;
+                const notchWidth = tailWidth * 0.2;
+                const curveIn1 = 0.2 + tC * 0.2;
+                const curveIn2 = 0.35 + tC * 0.2;
+                path += ` C ${CENTER_X - tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X - tailWidth * (0.85 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X - tailWidth * 0.85} ${tailY - notchDepth * 0.4}`;
+                path += ` L ${CENTER_X - tailWidth * 0.5} ${tailY}`;
+                path += ` L ${CENTER_X - notchWidth} ${tailY - notchDepth * 0.15}`;
+                path += ` Q ${CENTER_X} ${tailY - notchDepth * 0.5}, ${CENTER_X + notchWidth} ${tailY - notchDepth * 0.15}`;
+                path += ` L ${CENTER_X + tailWidth * 0.5} ${tailY}`;
+                path += ` L ${CENTER_X + tailWidth * 0.85} ${tailY - notchDepth * 0.4}`;
+                path += ` C ${CENTER_X + tailWidth * (0.85 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X + tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'pin') {
-                // Pin tail - comes to a rounded point
-                path += ` Q ${CENTER_X - tailWidth * 0.8} ${tailY - 10},`;
+                // Pin tail - tC affects how gradually it comes to point
+                const curveIn1 = 0.2 + tC * 0.2;
+                const curveIn2 = 0.4 + tC * 0.25;
+                path += ` C ${CENTER_X - tailWidth * (0.8 + tC * 0.15)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X - tailWidth * (0.4 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
                 path += ` ${CENTER_X} ${tailY}`;
-                path += ` Q ${CENTER_X + tailWidth * 0.8} ${tailY - 10},`;
-                path += ` ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+                path += ` C ${CENTER_X + tailWidth * (0.4 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X + tailWidth * (0.8 + tC * 0.15)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'round') {
-                // Round tail - smooth semicircle
-                path += ` Q ${CENTER_X - tailWidth} ${tailY}, ${CENTER_X} ${tailY + 5}`;
-                path += ` Q ${CENTER_X + tailWidth} ${tailY}, ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+                // Round tail - tC affects roundness
+                const curveIn1 = 0.25 + tC * 0.2;
+                const curveIn2 = 0.5 + tC * 0.25;
+                path += ` C ${CENTER_X - tailWidth * (0.85 + tC * 0.12)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X - tailWidth * (0.6 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X} ${tailY}`;
+                path += ` C ${CENTER_X + tailWidth * (0.6 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X + tailWidth * (0.85 + tC * 0.12)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'diamond') {
-                // Diamond tail - angular point
-                path += ` L ${CENTER_X - tailWidth * 0.7} ${tailY - 15}`;
+                // Diamond tail - tC affects transition into the points
+                const curveIn1 = 0.15 + tC * 0.2;
+                const curveIn2 = 0.3 + tC * 0.2;
+                path += ` C ${CENTER_X - tailWidth * (0.85 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X - tailWidth * (0.75 + tC * 0.12)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X - tailWidth * 0.55} ${tailY - tailDepth * 0.35}`;
                 path += ` L ${CENTER_X} ${tailY}`;
-                path += ` L ${CENTER_X + tailWidth * 0.7} ${tailY - 15}`;
-                path += ` L ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+                path += ` L ${CENTER_X + tailWidth * 0.55} ${tailY - tailDepth * 0.35}`;
+                path += ` C ${CENTER_X + tailWidth * (0.75 + tC * 0.12)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X + tailWidth * (0.85 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'bat') {
-                // Bat tail - wide with center notch
-                path += ` L ${CENTER_X - tailWidth * 1.1} ${tailY - 5}`;
-                path += ` Q ${CENTER_X} ${tailY - 20}, ${CENTER_X + tailWidth * 1.1} ${tailY - 5}`;
-                path += ` L ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
+                // Bat tail - tC affects flare transition
+                const curveIn1 = 0.2 + tC * 0.2;
+                const curveIn2 = 0.45 + tC * 0.2;
+                path += ` C ${CENTER_X - tailWidth * (0.9 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X - tailWidth * (1.0 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X - tailWidth * 1.0} ${tailY - 5}`;
+                path += ` Q ${CENTER_X} ${tailY - tailDepth * (0.3 + tC * 0.15)}, ${CENTER_X + tailWidth * 1.0} ${tailY - 5}`;
+                path += ` C ${CENTER_X + tailWidth * (1.0 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` ${CENTER_X + tailWidth * (0.9 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             }
 
             // === RIGHT SIDE (bottom to top) ===
-            // Only add if tail doesn't already complete the right side
-            if (state.tail !== 'pin' && state.tail !== 'round' && state.tail !== 'diamond' && state.tail !== 'bat') {
-                path += ` L ${CENTER_X + halfWidth * 0.95} ${tailStartY}`;
-            }
-
-            // Right rail
-            path += ` C ${CENTER_X + halfWidth * 1.0} ${tailStartY * 0.95},`;
-            path += ` ${CENTER_X + halfWidth * 1.02} ${widePointY},`;
+            // Smooth curve from tail back to wide point - tC affects smoothness
+            path += ` C ${CENTER_X + tailStartWidth * tailRailBulge} ${widePointY + wideToTail * (0.5 + tC * 0.2)},`;
+            path += ` ${CENTER_X + halfWidth * tailRailBulge} ${widePointY + wideToTail * (0.2 + tC * 0.15)},`;
             path += ` ${CENTER_X + halfWidth} ${widePointY}`;
-            path += ` C ${CENTER_X + halfWidth * 1.02} ${widePointY},`;
-            path += ` ${CENTER_X + halfWidth * 1.02} ${widePointY * 0.7},`;
-            path += ` ${CENTER_X + halfWidth} ${noseEndY}`;
 
-            // Right nose (mirror of left)
+            // From wide point back up to nose - nC affects smoothness
+            path += ` C ${CENTER_X + halfWidth * railBulge} ${noseEndY + noseToWide * (0.4 + nC * 0.1)},`;
+            path += ` ${CENTER_X + halfWidth * railBulge} ${noseEndY + noseToWide * (0.1 + nC * 0.2)},`;
+            path += ` ${CENTER_X + noseEndWidth} ${noseEndY}`;
+
+            // Right nose (mirror of left) - nC affects curve
             if (state.nose === 'pointed') {
-                path += ` C ${CENTER_X + halfWidth * 0.8} ${noseY + boardHeight * 0.1},`;
-                path += ` ${CENTER_X + halfWidth * 0.3} ${noseY + boardHeight * 0.05},`;
-                path += ` ${CENTER_X} ${noseY}`;
+                const cp1x = CENTER_X + halfWidth * (0.4 + nC * 0.4);
+                const cp1y = noseY + noseHeight * (0.2 + nC * 0.3);
+                const cp2x = CENTER_X + halfWidth * (0.1 + nC * 0.3);
+                const cp2y = noseY + noseHeight * (0.05 + nC * 0.15);
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X} ${noseY}`;
             } else if (state.nose === 'round') {
-                path += ` C ${CENTER_X + halfWidth} ${noseY + boardHeight * 0.03},`;
-                path += ` ${CENTER_X + halfWidth * 0.8} ${noseY},`;
-                path += ` ${CENTER_X} ${noseY}`;
+                const cp1x = CENTER_X + noseEndWidth * (0.9 + nC * 0.1);
+                const cp1y = noseY + noseHeight * (0.1 + nC * 0.15);
+                const cp2x = CENTER_X + halfWidth * (0.5 + nC * 0.4);
+                const cp2y = noseY + noseHeight * (0.01 * (1 - nC));
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X} ${noseY}`;
             } else if (state.nose === 'squash') {
-                path += ` C ${CENTER_X + halfWidth} ${noseY + boardHeight * 0.02},`;
-                path += ` ${CENTER_X + halfWidth * 0.7} ${noseY},`;
-                path += ` ${CENTER_X + halfWidth * 0.35} ${noseY}`;
-                path += ` L ${CENTER_X - halfWidth * 0.35} ${noseY}`;
+                const squashWidth = halfWidth * 0.4;
+                const cp1x = CENTER_X + noseEndWidth;
+                const cp1y = noseY + noseHeight * (0.05 + nC * 0.15);
+                const cp2x = CENTER_X + halfWidth * (0.5 + nC * 0.25);
+                const cp2y = noseY + noseHeight * (0.02 * (1 - nC));
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X + squashWidth} ${noseY}`;
+                path += ` L ${CENTER_X - squashWidth} ${noseY}`;
             } else if (state.nose === 'bullet') {
-                path += ` C ${CENTER_X + halfWidth * 0.9} ${noseY + boardHeight * 0.06},`;
-                path += ` ${CENTER_X + halfWidth * 0.5} ${noseY + boardHeight * 0.02},`;
-                path += ` ${CENTER_X} ${noseY}`;
+                const cp1x = CENTER_X + halfWidth * (0.65 + nC * 0.3);
+                const cp1y = noseY + noseHeight * (0.15 + nC * 0.2);
+                const cp2x = CENTER_X + halfWidth * (0.3 + nC * 0.3);
+                const cp2y = noseY + noseHeight * (0.03 + nC * 0.1);
+                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X} ${noseY}`;
             }
 
             path += ' Z';
@@ -751,18 +856,18 @@
             updateBoardColor();
 
             // Draw fins
-            drawFins(boardHeight, tailY, halfWidth);
+            drawFins(boardHeight, tailY, halfWidth, tailStartY);
 
             // Update dimensions display
             updateDimensionDisplay();
         }
 
-        function drawFins(boardHeight, tailY, halfWidth) {
+        function drawFins(boardHeight, tailY, halfWidth, tailStartY) {
             finsGroup.innerHTML = '';
 
-            // Calculate fin positions relative to board
-            const finAreaTop = tailY - boardHeight * 0.18;
-            const finAreaBottom = tailY - 15;
+            // Calculate fin positions relative to board - use tailStartY for proper placement
+            const finAreaTop = tailStartY;
+            const finAreaBottom = tailY - 20;
 
             // Fin configurations with positions as percentages
             const configs = {
@@ -967,6 +1072,32 @@
             updateDimensionDisplay();
         });
 
+        // Event Listeners - Taper Sliders
+        document.getElementById('noseTaperSlider').addEventListener('input', (e) => {
+            state.noseTaper = parseInt(e.target.value);
+            document.getElementById('noseTaperValue').textContent = `${state.noseTaper}%`;
+            drawBoard();
+        });
+
+        document.getElementById('tailTaperSlider').addEventListener('input', (e) => {
+            state.tailTaper = parseInt(e.target.value);
+            document.getElementById('tailTaperValue').textContent = `${state.tailTaper}%`;
+            drawBoard();
+        });
+
+        // Event Listeners - Curve Sliders
+        document.getElementById('noseCurveSlider').addEventListener('input', (e) => {
+            state.noseCurve = parseInt(e.target.value);
+            document.getElementById('noseCurveValue').textContent = `${state.noseCurve}%`;
+            drawBoard();
+        });
+
+        document.getElementById('tailCurveSlider').addEventListener('input', (e) => {
+            state.tailCurve = parseInt(e.target.value);
+            document.getElementById('tailCurveValue').textContent = `${state.tailCurve}%`;
+            drawBoard();
+        });
+
         // Summary Button
         document.getElementById('summaryBtn').addEventListener('click', () => {
             const summary = `
@@ -975,6 +1106,10 @@ Your Custom Board Design
 Nose: ${state.nose.charAt(0).toUpperCase() + state.nose.slice(1)}
 Tail: ${state.tail.charAt(0).toUpperCase() + state.tail.slice(1)}
 Dimensions: ${formatLength(state.length)} x ${state.width}" x ${state.thickness}"
+Nose Taper: ${state.noseTaper}%
+Tail Taper: ${state.tailTaper}%
+Nose Curve: ${state.noseCurve}%
+Tail Curve: ${state.tailCurve}%
 Fin Setup: ${state.fins.charAt(0).toUpperCase() + state.fins.slice(1)}
 
 Contact Mike Wallace to discuss your custom build:
