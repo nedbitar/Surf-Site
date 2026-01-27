@@ -545,6 +545,25 @@
                     </div>
                 </div>
 
+                <!-- Width Controls -->
+                <div class="control-section">
+                    <h3>Section Widths</h3>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Nose Width</span>
+                            <span class="slider-value" id="noseWidthValue">85%</span>
+                        </div>
+                        <input type="range" id="noseWidthSlider" min="50" max="100" value="85">
+                    </div>
+                    <div class="slider-control">
+                        <div class="slider-label">
+                            <span>Tail Width</span>
+                            <span class="slider-value" id="tailWidthValue">80%</span>
+                        </div>
+                        <input type="range" id="tailWidthSlider" min="50" max="100" value="80">
+                    </div>
+                </div>
+
                 <!-- Curve Controls -->
                 <div class="control-section">
                     <h3>Transition Curves</h3>
@@ -617,6 +636,8 @@
             thickness: 2.5,
             noseTaper: 20, // percentage of board length where nose blends to rail
             tailTaper: 18, // percentage of board length where tail begins
+            noseWidth: 85, // nose section width as percentage of body width
+            tailWidth: 80, // tail section width as percentage of body width
             noseCurve: 50, // curve intensity for nose transition (10=harsh, 100=smooth)
             tailCurve: 50, // curve intensity for tail transition (10=harsh, 100=smooth)
             fins: 'thruster',
@@ -669,179 +690,152 @@
             const totalHeight = boardHeight + PADDING_TOP + PADDING_BOTTOM;
             boardSvg.setAttribute('viewBox', `0 0 ${SVG_WIDTH} ${totalHeight}`);
 
-            // Calculate smooth taper widths
-            const noseEndWidth = halfWidth * 0.98;
-            const tailStartWidth = halfWidth * 0.92;
+            // Calculate section widths based on user controls
+            // noseWidth/tailWidth are percentages of the main body width
+            const noseEndWidth = halfWidth * (state.noseWidth / 100);
+            const tailStartWidth = halfWidth * (state.tailWidth / 100);
 
             // Build the board outline path
             let path = '';
 
             // === LEFT SIDE (top to bottom) ===
 
-            // Nose shape - curve factor affects how quickly it spreads out
+            // Nose shape - NOT affected by curve, just the shape type
             const noseHeight = noseEndY - noseY;
             if (state.nose === 'pointed') {
                 path = `M ${CENTER_X} ${noseY}`;
-                // nC affects the bulge - low = straight lines, high = curved
-                const cp1x = CENTER_X - halfWidth * (0.1 + nC * 0.3);
-                const cp1y = noseY + noseHeight * (0.05 + nC * 0.15);
-                const cp2x = CENTER_X - halfWidth * (0.4 + nC * 0.4);
-                const cp2y = noseY + noseHeight * (0.2 + nC * 0.3);
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.25} ${noseY + noseHeight * 0.15},`;
+                path += ` ${CENTER_X - halfWidth * 0.7} ${noseY + noseHeight * 0.45},`;
+                path += ` ${CENTER_X - noseEndWidth} ${noseEndY}`;
             } else if (state.nose === 'round') {
                 path = `M ${CENTER_X} ${noseY}`;
-                const cp1x = CENTER_X - halfWidth * (0.5 + nC * 0.4);
-                const cp1y = noseY + noseHeight * (0.01 * (1 - nC));
-                const cp2x = CENTER_X - noseEndWidth * (0.9 + nC * 0.1);
-                const cp2y = noseY + noseHeight * (0.1 + nC * 0.15);
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.85} ${noseY},`;
+                path += ` ${CENTER_X - noseEndWidth} ${noseY + noseHeight * 0.15},`;
+                path += ` ${CENTER_X - noseEndWidth} ${noseEndY}`;
             } else if (state.nose === 'squash') {
                 const squashWidth = halfWidth * 0.4;
                 path = `M ${CENTER_X - squashWidth} ${noseY}`;
-                const cp1x = CENTER_X - halfWidth * (0.5 + nC * 0.25);
-                const cp1y = noseY + noseHeight * (0.02 * (1 - nC));
-                const cp2x = CENTER_X - noseEndWidth;
-                const cp2y = noseY + noseHeight * (0.05 + nC * 0.15);
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.6} ${noseY},`;
+                path += ` ${CENTER_X - noseEndWidth} ${noseY + noseHeight * 0.08},`;
+                path += ` ${CENTER_X - noseEndWidth} ${noseEndY}`;
             } else if (state.nose === 'bullet') {
                 path = `M ${CENTER_X} ${noseY}`;
-                const cp1x = CENTER_X - halfWidth * (0.3 + nC * 0.3);
-                const cp1y = noseY + noseHeight * (0.03 + nC * 0.1);
-                const cp2x = CENTER_X - halfWidth * (0.65 + nC * 0.3);
-                const cp2y = noseY + noseHeight * (0.15 + nC * 0.2);
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X - noseEndWidth} ${noseEndY}`;
+                path += ` C ${CENTER_X - halfWidth * 0.5} ${noseY + noseHeight * 0.08},`;
+                path += ` ${CENTER_X - halfWidth * 0.85} ${noseY + noseHeight * 0.3},`;
+                path += ` ${CENTER_X - noseEndWidth} ${noseEndY}`;
             }
 
-            // Transition from nose to wide point - nC affects smoothness
+            // === NOSE TO RAIL TRANSITION - nC controls this curve ===
+            // nC: 0 = harsh/angular transition, 1 = smooth/flowing transition
             const noseToWide = widePointY - noseEndY;
-            const railBulge = 1.0 + nC * 0.02; // slight outward bulge for smooth boards
-            path += ` C ${CENTER_X - halfWidth * railBulge} ${noseEndY + noseToWide * (0.1 + nC * 0.2)},`;
-            path += ` ${CENTER_X - halfWidth * railBulge} ${noseEndY + noseToWide * (0.4 + nC * 0.1)},`;
+            const noseTransitionBulge = 0.98 + nC * 0.08; // how much it bulges outward
+            const noseTransitionEase1 = 0.02 + nC * 0.45; // where first control point sits (Y)
+            const noseTransitionEase2 = 0.15 + nC * 0.4; // where second control point sits (Y)
+            path += ` C ${CENTER_X - halfWidth * noseTransitionBulge} ${noseEndY + noseToWide * noseTransitionEase1},`;
+            path += ` ${CENTER_X - halfWidth * noseTransitionBulge} ${noseEndY + noseToWide * noseTransitionEase2},`;
             path += ` ${CENTER_X - halfWidth} ${widePointY}`;
 
-            // From wide point to tail start - tC affects smoothness
+            // === RAIL TO TAIL TRANSITION - tC controls this curve ===
+            // tC: 0 = harsh/angular transition, 1 = smooth/flowing transition
             const wideToTail = tailStartY - widePointY;
-            const tailRailBulge = 1.0 + tC * 0.02;
-            path += ` C ${CENTER_X - halfWidth * tailRailBulge} ${widePointY + wideToTail * (0.2 + tC * 0.15)},`;
-            path += ` ${CENTER_X - tailStartWidth * tailRailBulge} ${widePointY + wideToTail * (0.5 + tC * 0.2)},`;
+            const tailTransitionBulge = 0.98 + tC * 0.08;
+            const tailTransitionEase1 = 0.02 + tC * 0.45;
+            const tailTransitionEase2 = 0.15 + tC * 0.4;
+            path += ` C ${CENTER_X - halfWidth * tailTransitionBulge} ${widePointY + wideToTail * tailTransitionEase1},`;
+            path += ` ${CENTER_X - tailStartWidth * tailTransitionBulge} ${widePointY + wideToTail * tailTransitionEase2},`;
             path += ` ${CENTER_X - tailStartWidth} ${tailStartY}`;
 
-            // === TAIL SHAPE ===
+            // === TAIL SHAPE === (NOT affected by curve controls)
             const tailWidth = tailStartWidth * 0.95;
             const tailDepth = tailY - tailStartY;
 
-            // tC affects how smoothly the tail curves in
             if (state.tail === 'squash') {
-                const curveIn1 = 0.25 + tC * 0.25;
-                const curveIn2 = 0.5 + tC * 0.25;
-                path += ` C ${CENTER_X - tailWidth * (0.95 + tC * 0.05)} ${tailStartY + tailDepth * curveIn1},`;
-                path += ` ${CENTER_X - tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` C ${CENTER_X - tailWidth * 0.95} ${tailStartY + tailDepth * 0.35},`;
+                path += ` ${CENTER_X - tailWidth * 0.9} ${tailStartY + tailDepth * 0.65},`;
                 path += ` ${CENTER_X - tailWidth * 0.85} ${tailY - 8}`;
                 path += ` Q ${CENTER_X - tailWidth * 0.7} ${tailY}, ${CENTER_X - tailWidth * 0.3} ${tailY}`;
                 path += ` L ${CENTER_X + tailWidth * 0.3} ${tailY}`;
                 path += ` Q ${CENTER_X + tailWidth * 0.7} ${tailY}, ${CENTER_X + tailWidth * 0.85} ${tailY - 8}`;
-                path += ` C ${CENTER_X + tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
-                path += ` ${CENTER_X + tailWidth * (0.95 + tC * 0.05)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` C ${CENTER_X + tailWidth * 0.9} ${tailStartY + tailDepth * 0.65},`;
+                path += ` ${CENTER_X + tailWidth * 0.95} ${tailStartY + tailDepth * 0.35},`;
                 path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'swallow') {
                 const notchDepth = tailDepth * 0.6;
                 const notchWidth = tailWidth * 0.2;
-                const curveIn1 = 0.2 + tC * 0.2;
-                const curveIn2 = 0.35 + tC * 0.2;
-                path += ` C ${CENTER_X - tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn1},`;
-                path += ` ${CENTER_X - tailWidth * (0.85 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` C ${CENTER_X - tailWidth * 0.92} ${tailStartY + tailDepth * 0.3},`;
+                path += ` ${CENTER_X - tailWidth * 0.88} ${tailStartY + tailDepth * 0.5},`;
                 path += ` ${CENTER_X - tailWidth * 0.85} ${tailY - notchDepth * 0.4}`;
                 path += ` L ${CENTER_X - tailWidth * 0.5} ${tailY}`;
                 path += ` L ${CENTER_X - notchWidth} ${tailY - notchDepth * 0.15}`;
                 path += ` Q ${CENTER_X} ${tailY - notchDepth * 0.5}, ${CENTER_X + notchWidth} ${tailY - notchDepth * 0.15}`;
                 path += ` L ${CENTER_X + tailWidth * 0.5} ${tailY}`;
                 path += ` L ${CENTER_X + tailWidth * 0.85} ${tailY - notchDepth * 0.4}`;
-                path += ` C ${CENTER_X + tailWidth * (0.85 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
-                path += ` ${CENTER_X + tailWidth * (0.9 + tC * 0.08)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` C ${CENTER_X + tailWidth * 0.88} ${tailStartY + tailDepth * 0.5},`;
+                path += ` ${CENTER_X + tailWidth * 0.92} ${tailStartY + tailDepth * 0.3},`;
                 path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'pin') {
-                // Pin tail - tC affects how gradually it comes to point
-                const curveIn1 = 0.2 + tC * 0.2;
-                const curveIn2 = 0.4 + tC * 0.25;
-                path += ` C ${CENTER_X - tailWidth * (0.8 + tC * 0.15)} ${tailStartY + tailDepth * curveIn1},`;
-                path += ` ${CENTER_X - tailWidth * (0.4 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` C ${CENTER_X - tailWidth * 0.85} ${tailStartY + tailDepth * 0.3},`;
+                path += ` ${CENTER_X - tailWidth * 0.5} ${tailStartY + tailDepth * 0.6},`;
                 path += ` ${CENTER_X} ${tailY}`;
-                path += ` C ${CENTER_X + tailWidth * (0.4 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
-                path += ` ${CENTER_X + tailWidth * (0.8 + tC * 0.15)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` C ${CENTER_X + tailWidth * 0.5} ${tailStartY + tailDepth * 0.6},`;
+                path += ` ${CENTER_X + tailWidth * 0.85} ${tailStartY + tailDepth * 0.3},`;
                 path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'round') {
-                // Round tail - tC affects roundness
-                const curveIn1 = 0.25 + tC * 0.2;
-                const curveIn2 = 0.5 + tC * 0.25;
-                path += ` C ${CENTER_X - tailWidth * (0.85 + tC * 0.12)} ${tailStartY + tailDepth * curveIn1},`;
-                path += ` ${CENTER_X - tailWidth * (0.6 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` C ${CENTER_X - tailWidth * 0.9} ${tailStartY + tailDepth * 0.35},`;
+                path += ` ${CENTER_X - tailWidth * 0.65} ${tailStartY + tailDepth * 0.7},`;
                 path += ` ${CENTER_X} ${tailY}`;
-                path += ` C ${CENTER_X + tailWidth * (0.6 + tC * 0.25)} ${tailStartY + tailDepth * curveIn2},`;
-                path += ` ${CENTER_X + tailWidth * (0.85 + tC * 0.12)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` C ${CENTER_X + tailWidth * 0.65} ${tailStartY + tailDepth * 0.7},`;
+                path += ` ${CENTER_X + tailWidth * 0.9} ${tailStartY + tailDepth * 0.35},`;
                 path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'diamond') {
-                // Diamond tail - tC affects transition into the points
-                const curveIn1 = 0.15 + tC * 0.2;
-                const curveIn2 = 0.3 + tC * 0.2;
-                path += ` C ${CENTER_X - tailWidth * (0.85 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
-                path += ` ${CENTER_X - tailWidth * (0.75 + tC * 0.12)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` C ${CENTER_X - tailWidth * 0.88} ${tailStartY + tailDepth * 0.25},`;
+                path += ` ${CENTER_X - tailWidth * 0.75} ${tailStartY + tailDepth * 0.4},`;
                 path += ` ${CENTER_X - tailWidth * 0.55} ${tailY - tailDepth * 0.35}`;
                 path += ` L ${CENTER_X} ${tailY}`;
                 path += ` L ${CENTER_X + tailWidth * 0.55} ${tailY - tailDepth * 0.35}`;
-                path += ` C ${CENTER_X + tailWidth * (0.75 + tC * 0.12)} ${tailStartY + tailDepth * curveIn2},`;
-                path += ` ${CENTER_X + tailWidth * (0.85 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` C ${CENTER_X + tailWidth * 0.75} ${tailStartY + tailDepth * 0.4},`;
+                path += ` ${CENTER_X + tailWidth * 0.88} ${tailStartY + tailDepth * 0.25},`;
                 path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             } else if (state.tail === 'bat') {
-                // Bat tail - tC affects flare transition
-                const curveIn1 = 0.2 + tC * 0.2;
-                const curveIn2 = 0.45 + tC * 0.2;
-                path += ` C ${CENTER_X - tailWidth * (0.9 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
-                path += ` ${CENTER_X - tailWidth * (1.0 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
+                path += ` C ${CENTER_X - tailWidth * 0.92} ${tailStartY + tailDepth * 0.3},`;
+                path += ` ${CENTER_X - tailWidth * 1.02} ${tailStartY + tailDepth * 0.55},`;
                 path += ` ${CENTER_X - tailWidth * 1.0} ${tailY - 5}`;
-                path += ` Q ${CENTER_X} ${tailY - tailDepth * (0.3 + tC * 0.15)}, ${CENTER_X + tailWidth * 1.0} ${tailY - 5}`;
-                path += ` C ${CENTER_X + tailWidth * (1.0 + tC * 0.08)} ${tailStartY + tailDepth * curveIn2},`;
-                path += ` ${CENTER_X + tailWidth * (0.9 + tC * 0.1)} ${tailStartY + tailDepth * curveIn1},`;
+                path += ` Q ${CENTER_X} ${tailY - tailDepth * 0.35}, ${CENTER_X + tailWidth * 1.0} ${tailY - 5}`;
+                path += ` C ${CENTER_X + tailWidth * 1.02} ${tailStartY + tailDepth * 0.55},`;
+                path += ` ${CENTER_X + tailWidth * 0.92} ${tailStartY + tailDepth * 0.3},`;
                 path += ` ${CENTER_X + tailStartWidth} ${tailStartY}`;
             }
 
             // === RIGHT SIDE (bottom to top) ===
-            // Smooth curve from tail back to wide point - tC affects smoothness
-            path += ` C ${CENTER_X + tailStartWidth * tailRailBulge} ${widePointY + wideToTail * (0.5 + tC * 0.2)},`;
-            path += ` ${CENTER_X + halfWidth * tailRailBulge} ${widePointY + wideToTail * (0.2 + tC * 0.15)},`;
+            // TAIL TO RAIL TRANSITION - tC controls this curve (mirror of left side)
+            path += ` C ${CENTER_X + tailStartWidth * tailTransitionBulge} ${widePointY + wideToTail * tailTransitionEase2},`;
+            path += ` ${CENTER_X + halfWidth * tailTransitionBulge} ${widePointY + wideToTail * tailTransitionEase1},`;
             path += ` ${CENTER_X + halfWidth} ${widePointY}`;
 
-            // From wide point back up to nose - nC affects smoothness
-            path += ` C ${CENTER_X + halfWidth * railBulge} ${noseEndY + noseToWide * (0.4 + nC * 0.1)},`;
-            path += ` ${CENTER_X + halfWidth * railBulge} ${noseEndY + noseToWide * (0.1 + nC * 0.2)},`;
+            // RAIL TO NOSE TRANSITION - nC controls this curve (mirror of left side)
+            path += ` C ${CENTER_X + halfWidth * noseTransitionBulge} ${noseEndY + noseToWide * noseTransitionEase2},`;
+            path += ` ${CENTER_X + halfWidth * noseTransitionBulge} ${noseEndY + noseToWide * noseTransitionEase1},`;
             path += ` ${CENTER_X + noseEndWidth} ${noseEndY}`;
 
-            // Right nose (mirror of left) - nC affects curve
+            // Right nose (mirror of left) - NOT affected by curve
             if (state.nose === 'pointed') {
-                const cp1x = CENTER_X + halfWidth * (0.4 + nC * 0.4);
-                const cp1y = noseY + noseHeight * (0.2 + nC * 0.3);
-                const cp2x = CENTER_X + halfWidth * (0.1 + nC * 0.3);
-                const cp2y = noseY + noseHeight * (0.05 + nC * 0.15);
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X} ${noseY}`;
+                path += ` C ${CENTER_X + halfWidth * 0.7} ${noseY + noseHeight * 0.45},`;
+                path += ` ${CENTER_X + halfWidth * 0.25} ${noseY + noseHeight * 0.15},`;
+                path += ` ${CENTER_X} ${noseY}`;
             } else if (state.nose === 'round') {
-                const cp1x = CENTER_X + noseEndWidth * (0.9 + nC * 0.1);
-                const cp1y = noseY + noseHeight * (0.1 + nC * 0.15);
-                const cp2x = CENTER_X + halfWidth * (0.5 + nC * 0.4);
-                const cp2y = noseY + noseHeight * (0.01 * (1 - nC));
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X} ${noseY}`;
+                path += ` C ${CENTER_X + noseEndWidth} ${noseY + noseHeight * 0.15},`;
+                path += ` ${CENTER_X + halfWidth * 0.85} ${noseY},`;
+                path += ` ${CENTER_X} ${noseY}`;
             } else if (state.nose === 'squash') {
                 const squashWidth = halfWidth * 0.4;
-                const cp1x = CENTER_X + noseEndWidth;
-                const cp1y = noseY + noseHeight * (0.05 + nC * 0.15);
-                const cp2x = CENTER_X + halfWidth * (0.5 + nC * 0.25);
-                const cp2y = noseY + noseHeight * (0.02 * (1 - nC));
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X + squashWidth} ${noseY}`;
+                path += ` C ${CENTER_X + noseEndWidth} ${noseY + noseHeight * 0.08},`;
+                path += ` ${CENTER_X + halfWidth * 0.6} ${noseY},`;
+                path += ` ${CENTER_X + squashWidth} ${noseY}`;
                 path += ` L ${CENTER_X - squashWidth} ${noseY}`;
             } else if (state.nose === 'bullet') {
-                const cp1x = CENTER_X + halfWidth * (0.65 + nC * 0.3);
-                const cp1y = noseY + noseHeight * (0.15 + nC * 0.2);
-                const cp2x = CENTER_X + halfWidth * (0.3 + nC * 0.3);
-                const cp2y = noseY + noseHeight * (0.03 + nC * 0.1);
-                path += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${CENTER_X} ${noseY}`;
+                path += ` C ${CENTER_X + halfWidth * 0.85} ${noseY + noseHeight * 0.3},`;
+                path += ` ${CENTER_X + halfWidth * 0.5} ${noseY + noseHeight * 0.08},`;
+                path += ` ${CENTER_X} ${noseY}`;
             }
 
             path += ' Z';
@@ -1085,6 +1079,19 @@
             drawBoard();
         });
 
+        // Event Listeners - Width Sliders
+        document.getElementById('noseWidthSlider').addEventListener('input', (e) => {
+            state.noseWidth = parseInt(e.target.value);
+            document.getElementById('noseWidthValue').textContent = `${state.noseWidth}%`;
+            drawBoard();
+        });
+
+        document.getElementById('tailWidthSlider').addEventListener('input', (e) => {
+            state.tailWidth = parseInt(e.target.value);
+            document.getElementById('tailWidthValue').textContent = `${state.tailWidth}%`;
+            drawBoard();
+        });
+
         // Event Listeners - Curve Sliders
         document.getElementById('noseCurveSlider').addEventListener('input', (e) => {
             state.noseCurve = parseInt(e.target.value);
@@ -1108,6 +1115,8 @@ Tail: ${state.tail.charAt(0).toUpperCase() + state.tail.slice(1)}
 Dimensions: ${formatLength(state.length)} x ${state.width}" x ${state.thickness}"
 Nose Taper: ${state.noseTaper}%
 Tail Taper: ${state.tailTaper}%
+Nose Width: ${state.noseWidth}%
+Tail Width: ${state.tailWidth}%
 Nose Curve: ${state.noseCurve}%
 Tail Curve: ${state.tailCurve}%
 Fin Setup: ${state.fins.charAt(0).toUpperCase() + state.fins.slice(1)}
